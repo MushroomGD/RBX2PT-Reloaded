@@ -510,29 +510,28 @@
       [shirtCtx, pantsCtx].forEach(ctx => {
         blitRegion(ctx, 439, 7,   146, 96,  231, 8,   128, 66);   // Top cap
         blitRegion(ctx, 440, 103, 144, 290, 231, 74,  128, 128);  // Front
-        blitRegion(ctx, 351, 103, 87,  290, 427, 74,  128, 128);  // Back
-        blitRegion(ctx, 586, 103, 87,  290, 361, 74,  64,  128);  // Left face → Roblox Right side
+        blitRegion(ctx, 351, 103, 87,  290, 165, 74,  64,  128);  // PT R col → Roblox Left
+        blitRegion(ctx, 586, 103, 87,  290, 361, 74,  64,  128);  // PT L col → Roblox Right
         blitRegion(ctx, 439, 430, 146, 59,  231, 202, 128, 66);   // Bottom tab
+        blitRegion(ctx, 439, 519, 146, 290, 427, 74,  128, 128);  // PT Back → Roblox Back
       });
 
-      // ── LEGS (shared) ─────────────────────────────────────────────────
-      [shirtCtx, pantsCtx].forEach(ctx => {
-        // PT Right Leg → Roblox Left Leg
-        blitRegion(ctx, 206, 597, 64, 64,  217, 290, 64, 63);
-        blitRegion(ctx, 206, 661, 64, 292, 217, 355, 64, 128);  // F
-        blitRegion(ctx, 142, 661, 64, 292, 151, 355, 64, 128);  // R
-        blitRegion(ctx, 79,  661, 63, 292, 85,  355, 64, 128);  // B
-        blitRegion(ctx, 14,  661, 63, 292, 19,  355, 64, 128);  // L
-        blitRegion(ctx, 206, 953, 64, 64,  217, 485, 64, 64);   // Bot cap
+      // ── LEGS (pants only) ─────────────────────────────────────────────
+      // PT Right Leg → Roblox Left Leg
+      blitRegion(pantsCtx, 206, 597, 64, 64,  217, 290, 64, 63);
+      blitRegion(pantsCtx, 206, 661, 64, 292, 217, 355, 64, 128);  // F
+      blitRegion(pantsCtx, 142, 661, 64, 292, 151, 355, 64, 128);  // R
+      blitRegion(pantsCtx, 79,  661, 63, 292, 85,  355, 64, 128);  // B
+      blitRegion(pantsCtx, 14,  661, 63, 292, 19,  355, 64, 128);  // L
+      blitRegion(pantsCtx, 206, 953, 64, 64,  217, 485, 64, 64);   // Bot cap
 
-        // PT Left Leg → Roblox Right Leg
-        blitRegion(ctx, 754, 597, 64, 64,  308, 290, 64, 63);
-        blitRegion(ctx, 754, 661, 64, 292, 308, 355, 64, 128);  // F
-        blitRegion(ctx, 819, 661, 62, 292, 374, 355, 64, 128);  // L
-        blitRegion(ctx, 882, 661, 64, 292, 440, 355, 64, 128);  // B
-        blitRegion(ctx, 946, 661, 64, 292, 506, 355, 64, 128);  // R
-        blitRegion(ctx, 754, 953, 64, 64,  308, 485, 64, 64);   // Bot cap
-      });
+      // PT Left Leg → Roblox Right Leg
+      blitRegion(pantsCtx, 754, 597, 64, 64,  308, 290, 64, 63);
+      blitRegion(pantsCtx, 754, 661, 64, 292, 308, 355, 64, 128);  // F
+      blitRegion(pantsCtx, 819, 661, 62, 292, 374, 355, 64, 128);  // L
+      blitRegion(pantsCtx, 882, 661, 64, 292, 440, 355, 64, 128);  // B
+      blitRegion(pantsCtx, 946, 661, 64, 292, 506, 355, 64, 128);  // R
+      blitRegion(pantsCtx, 754, 953, 64, 64,  308, 485, 64, 64);   // Bot cap
 
       // ── ARMS (shirt only) ─────────────────────────────────────────────
       // PT Right Arm → Roblox Left Arm
