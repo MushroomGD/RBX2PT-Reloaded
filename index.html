@@ -449,29 +449,29 @@
       [shirtCtx, pantsCtx].forEach(ctx => {
         blitRegion(ctx, 231, 8,   128, 66,  439, 7,   146, 96);   // Top cap
         blitRegion(ctx, 231, 74,  128, 128, 440, 103, 144, 290);  // Front  → PT Front (green)
-        blitRegion(ctx, 361, 74,  64,  128, 351, 103, 87,  290);  // Right  → PT Right (purple)
-        blitRegion(ctx, 165, 74,  64,  128, 586, 103, 87,  290);  // Left   → PT Left (red)
+        blitRegion(ctx, 165, 74,  64,  128, 351, 103, 87,  290);  // Left   → PT R col (purple)
+        blitRegion(ctx, 361, 74,  64,  128, 586, 103, 87,  290);  // Right  → PT L col (red)
         blitRegion(ctx, 231, 202, 128, 66,  439, 430, 146, 59);   // Bottom tab
         // Roblox Back (427,74,128,128) has no PT torso equivalent — omitted
       });
 
-      // ── LEGS (shared) ─────────────────────────────────────────────────
-      [shirtCtx, pantsCtx].forEach(ctx => {
-        // PT Right Leg ← Roblox Left Leg
-        blitRegion(ctx, 217, 290, 64, 63,  206, 597, 64, 64);
-        blitRegion(ctx, 217, 355, 64, 128, 206, 661, 64, 292);
-        blitRegion(ctx, 151, 355, 64, 128, 142, 661, 64, 292);
-        blitRegion(ctx, 85,  355, 64, 128, 79,  661, 63, 292);
-        blitRegion(ctx, 19,  355, 64, 128, 14,  661, 63, 292);
-        blitRegion(ctx, 217, 485, 64, 64,  206, 953, 64, 64);
-        // PT Left Leg ← Roblox Right Leg
-        blitRegion(ctx, 308, 290, 64, 63,  754, 597, 64, 64);
-        blitRegion(ctx, 308, 355, 64, 128, 754, 661, 64, 292);
-        blitRegion(ctx, 374, 355, 64, 128, 819, 661, 62, 292);
-        blitRegion(ctx, 440, 355, 64, 128, 882, 661, 64, 292);
-        blitRegion(ctx, 506, 355, 64, 128, 946, 661, 64, 292);
-        blitRegion(ctx, 308, 485, 64, 64,  754, 953, 64, 64);
-      });
+      // ── LEGS (pants only) ────────────────────────────────────────────
+      // Shirt arm regions share the same source coords as legs — only map
+      // leg data when we actually have a pants template.
+      // PT Right Leg ← Roblox Left Leg
+      blitRegion(pantsCtx, 217, 290, 64, 63,  206, 597, 64, 64);
+      blitRegion(pantsCtx, 217, 355, 64, 128, 206, 661, 64, 292);
+      blitRegion(pantsCtx, 151, 355, 64, 128, 142, 661, 64, 292);
+      blitRegion(pantsCtx, 85,  355, 64, 128, 79,  661, 63, 292);
+      blitRegion(pantsCtx, 19,  355, 64, 128, 14,  661, 63, 292);
+      blitRegion(pantsCtx, 217, 485, 64, 64,  206, 953, 64, 64);
+      // PT Left Leg ← Roblox Right Leg
+      blitRegion(pantsCtx, 308, 290, 64, 63,  754, 597, 64, 64);
+      blitRegion(pantsCtx, 308, 355, 64, 128, 754, 661, 64, 292);
+      blitRegion(pantsCtx, 374, 355, 64, 128, 819, 661, 62, 292);
+      blitRegion(pantsCtx, 440, 355, 64, 128, 882, 661, 64, 292);
+      blitRegion(pantsCtx, 506, 355, 64, 128, 946, 661, 64, 292);
+      blitRegion(pantsCtx, 308, 485, 64, 64,  754, 953, 64, 64);
 
       // ── ARMS (shirt only) ─────────────────────────────────────────────
       // PT Right Arm ← Roblox Left Arm
