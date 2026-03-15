@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>PT → Roblox</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink: #bf4197;
+      --blue: #257fdb;
+      --bg: #141414;
+      --surface: #1e1e1e;
+      --border: #333;
+      --text: #f0f0f0;
+      --muted: #888;
+      --radius: 14px;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 52px 24px 80px;
+      text-align: center;
+      background: linear-gradient(135deg, #0d1a2e 0%, #1a0d14 100%);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 80% 50%, rgba(191,65,151,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 70% at 20% 40%, rgba(37,127,219,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 12px;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      background: linear-gradient(100deg, #fff 30%, #257fdb 70%, #bf4197 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 14px;
+    }
+    .hero-sub { font-size: 0.85rem; color: var(--muted); }
+    .hero-sub a { color: #f59dcc; text-decoration: none; }
+    .hero-sub a:hover { text-decoration: underline; }
+
+    /* ── Main ── */
+    .main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    /* ── Mode toggle ── */
+    .mode-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: -28px;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 10;
+    }
+    .mode-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      padding: 5px;
+      gap: 4px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    }
+    .mode-btn {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 8px 22px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      background: transparent;
+      color: var(--muted);
+    }
+    .mode-btn.active {
+      background: linear-gradient(90deg, var(--blue), var(--pink));
+      color: #fff;
+    }
+
+    /* ── Upload zone ── */
+    .upload-wrap { margin-bottom: 20px; }
+    .upload-zone {
+      border: 1.5px dashed var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 48px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+      text-align: center;
+    }
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: var(--blue);
+      background: rgba(37,127,219,0.06);
+      box-shadow: 0 0 0 4px rgba(37,127,219,0.08);
+    }
+    .upload-icon { width: 40px; height: 40px; color: var(--blue); opacity: 0.8; }
+    .upload-label { font-size: 0.95rem; font-weight: 500; color: var(--text); }
+    .upload-hint { font-size: 0.78rem; color: var(--muted); }
+
+    /* ── Preview card ── */
+    .preview-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: none;
+    }
+    .preview-card.visible { display: block; }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .preview-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .preview-badge {
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(37,127,219,0.15);
+      color: var(--blue);
+      border: 1px solid rgba(37,127,219,0.3);
+    }
+
+    .canvas-wrap {
+      background-color: #444;
+      background-image:
+        linear-gradient(45deg, #555 25%, transparent 25%),
+        linear-gradient(-45deg, #555 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #555 75%),
+        linear-gradient(-45deg, transparent 75%, #555 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+    }
+    #previewCanvas {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 6px;
+      transition: opacity 0.15s;
+    }
+    #previewCanvas.switching { opacity: 0; }
+
+    .preview-footer {
+      padding: 14px 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .preview-filename {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+
+    .btn-download {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 10px 22px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(90deg, var(--blue), var(--pink));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.15s, transform 0.15s;
+      flex-shrink: 0;
+    }
+    .btn-download:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-download:active { transform: translateY(0); opacity: 1; }
+    .btn-download svg { width: 14px; height: 14px; }
+
+    #imageInput { display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <p class="hero-eyebrow">Clothing Converter</p>
+    <h1>Polytoria → Roblox</h1>
+    <p class="hero-sub">
+      Also see: <a href="index.html">RBX2PT — Roblox to Polytoria</a>
+    </p>
+  </div>
+
+  <div class="main">
+
+    <div class="mode-row">
+      <div class="mode-pill">
+        <button class="mode-btn active" id="btn-shirt">SHIRT</button>
+        <button class="mode-btn" id="btn-pants">PANTS</button>
+      </div>
+    </div>
+
+    <div class="upload-wrap">
+      <div class="upload-zone" id="uploadZone">
+        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16V4m0 0L8 8m4-4l4 4"/>
+          <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1"/>
+        </svg>
+        <span class="upload-label">Drop your Polytoria template here</span>
+        <span class="upload-hint">or click to browse — PNG, JPG accepted</span>
+      </div>
+    </div>
+
+    <div class="preview-card" id="previewCard">
+      <div class="preview-header">
+        <span class="preview-title">Output Preview</span>
+        <span class="preview-badge" id="modeBadge">SHIRT</span>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="previewCanvas" width="585" height="559"></canvas>
+      </div>
+      <div class="preview-footer">
+        <span class="preview-filename" id="filenameDisplay">—</span>
+        <button class="btn-download" id="btnDownload">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 4v12m0 0l-4-4m4 4l4-4"/>
+            <path d="M4 18h16"/>
+          </svg>
+          Download
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <input type="file" accept="image/*" id="imageInput">
+
+  <script>
+    // ── Off-screen canvases ────────────────────────────────────────────────
+    // source: uploaded Polytoria 1024×1024 texture
+    const sourceCanvas = document.createElement('canvas');
+    sourceCanvas.width = 1024; sourceCanvas.height = 1024;
+    const sourceCtx = sourceCanvas.getContext('2d', { willReadFrequently: true });
+
+    // shirt/pants output canvases: Roblox 585×559
+    const shirtCanvas = document.createElement('canvas');
+    shirtCanvas.width = 585; shirtCanvas.height = 559;
+    const shirtCtx = shirtCanvas.getContext('2d', { willReadFrequently: true });
+
+    const pantsCanvas = document.createElement('canvas');
+    pantsCanvas.width = 585; pantsCanvas.height = 559;
+    const pantsCtx = pantsCanvas.getContext('2d', { willReadFrequently: true });
+
+    // visible preview canvas
+    const previewCanvas = document.getElementById('previewCanvas');
+    const previewCtx = previewCanvas.getContext('2d');
+
+    // ── State ─────────────────────────────────────────────────────────────
+    let mode = 'shirt';
+    let hasImage = false;
+    const filenames = { shirt: '', pants: '' };
+    const recentSuffixes = new Set();
+
+    // ── DOM refs ──────────────────────────────────────────────────────────
+    const uploadZone      = document.getElementById('uploadZone');
+    const imageInput      = document.getElementById('imageInput');
+    const previewCard     = document.getElementById('previewCard');
+    const btnDownload     = document.getElementById('btnDownload');
+    const filenameDisplay = document.getElementById('filenameDisplay');
+    const modeBadge       = document.getElementById('modeBadge');
+    const btnShirt        = document.getElementById('btn-shirt');
+    const btnPants        = document.getElementById('btn-pants');
+
+    // ── Mode toggle ───────────────────────────────────────────────────────
+    btnShirt.addEventListener('click', () => setMode('shirt'));
+    btnPants.addEventListener('click', () => setMode('pants'));
+
+    function setMode(m) {
+      if (mode === m) return;
+      mode = m;
+      btnShirt.classList.toggle('active', m === 'shirt');
+      btnPants.classList.toggle('active', m === 'pants');
+      if (hasImage) swapPreview();
+    }
+
+    function swapPreview() {
+      previewCanvas.classList.add('switching');
+      setTimeout(() => {
+        copyToPreview(mode === 'shirt' ? shirtCanvas : pantsCanvas);
+        modeBadge.textContent = mode === 'shirt' ? 'SHIRT' : 'PANTS';
+        filenameDisplay.textContent = filenames[mode];
+        previewCanvas.classList.remove('switching');
+      }, 150);
+    }
+
+    function copyToPreview(src) {
+      previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+      previewCtx.drawImage(src, 0, 0);
+    }
+
+    // ── Filename generation ───────────────────────────────────────────────
+    function generateFilename(type) {
+      const now = new Date();
+      const dd = String(now.getDate()).padStart(2, '0');
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const yy = String(now.getFullYear()).slice(-2);
+      const dateStr = dd + mm + yy;
+      let suffix, attempts = 0;
+      do {
+        suffix = String(Math.floor(100000 + Math.random() * 900000));
+        attempts++;
+      } while (recentSuffixes.has(suffix) && attempts < 100);
+      recentSuffixes.add(suffix);
+      if (recentSuffixes.size > 40) recentSuffixes.delete(recentSuffixes.values().next().value);
+      const label = type === 'pants' ? 'Pants' : 'Shirt';
+      return `${label}_${dateStr}${suffix}.png`;
+    }
+
+    // ── Upload handling ───────────────────────────────────────────────────
+    uploadZone.addEventListener('click', () => imageInput.click());
+    uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+    uploadZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (file) processFile(file);
+    });
+    imageInput.addEventListener('change', (e) => {
+      if (e.target.files[0]) processFile(e.target.files[0]);
+      imageInput.value = '';
+    });
+
+    function processFile(file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          sourceCtx.clearRect(0, 0, 1024, 1024);
+          sourceCtx.drawImage(img, 0, 0);
+          renderBoth();
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // ── Alpha check ───────────────────────────────────────────────────────
+    function regionHasPixels(srcX, srcY, srcW, srcH) {
+      const data = sourceCtx.getImageData(srcX, srcY, srcW, srcH).data;
+      for (let i = 3; i < data.length; i += 4) if (data[i] > 0) return true;
+      return false;
+    }
+
+    // ── Blit: crop from sourceCanvas, resize, paste into dstCtx ──────────
+    function blitRegion(dstCtx, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH) {
+      if (!regionHasPixels(srcX, srcY, srcW, srcH)) return;
+      const tmp = document.createElement('canvas');
+      tmp.width = dstW; tmp.height = dstH;
+      const tmpCtx = tmp.getContext('2d');
+      tmpCtx.imageSmoothingEnabled = true;
+      tmpCtx.imageSmoothingQuality = 'high';
+      tmpCtx.drawImage(sourceCanvas, srcX, srcY, srcW, srcH, 0, 0, dstW, dstH);
+      dstCtx.drawImage(tmp, dstX, dstY);
+    }
+
+    // ── Render both outputs ───────────────────────────────────────────────
+    //
+    // Polytoria source regions (1024×1024) → Roblox destination (585×559)
+    //
+    // ── TORSO ────────────────────────────────────────────────────────────
+    // PT source:
+    //   Top cap:    x=439, y=7,   w=146, h=96
+    //   Front (F):  x=440, y=103, w=144, h=290
+    //   Back (B):   x=351, y=103, w=87,  h=290
+    //   Left face:  x=586, y=103, w=87,  h=290
+    //   Bottom tab: x=439, y=430, w=146, h=59
+    // Roblox dest:
+    //   Top cap:    x=231, y=8,   w=128, h=66
+    //   Front:      x=231, y=74,  w=128, h=128
+    //   Back:       x=427, y=74,  w=128, h=128
+    //   Right side: x=361, y=74,  w=64,  h=128
+    //   Bottom tab: x=231, y=202, w=128, h=66
+    //
+    // ── ARMS (shirt only) ─────────────────────────────────────────────────
+    // PT Right Arm block (cols 6–269):
+    //   Top cap:  x=204, y=7,   w=66, h=64
+    //   F face:   x=204, y=71,  w=66, h=290
+    //   R face:   x=138, y=71,  w=66, h=290
+    //   B face:   x=72,  y=71,  w=66, h=290
+    //   L face:   x=6,   y=71,  w=65, h=290
+    //   Bot cap:  x=204, y=361, w=66, h=64
+    // → Roblox Left Arm:
+    //   Top cap:  x=217, y=289, w=64, h=64
+    //   F face:   x=217, y=355, w=64, h=128
+    //   R face:   x=151, y=355, w=64, h=128
+    //   B face:   x=85,  y=355, w=64, h=128
+    //   L face:   x=19,  y=355, w=64, h=128
+    //   Bot cap:  x=217, y=485, w=64, h=64
+    //
+    // PT Left Arm block (cols 754–1017):
+    //   Top cap:  x=754, y=7,   w=66, h=64
+    //   F face:   x=754, y=71,  w=66, h=290
+    //   L face:   x=820, y=71,  w=65, h=290
+    //   B face:   x=886, y=71,  w=66, h=290
+    //   R face:   x=952, y=71,  w=66, h=290
+    //   Bot cap:  x=754, y=361, w=66, h=64
+    // → Roblox Right Arm:
+    //   Top cap:  x=308, y=289, w=64, h=64
+    //   F face:   x=308, y=355, w=64, h=128
+    //   L face:   x=374, y=355, w=64, h=128
+    //   B face:   x=440, y=355, w=64, h=128
+    //   R face:   x=506, y=355, w=64, h=128
+    //   Bot cap:  x=308, y=485, w=64, h=64
+    //
+    // ── LEGS ─────────────────────────────────────────────────────────────
+    // PT Right Leg block (cols 6–269 bottom):
+    //   Top cap:  x=206, y=597, w=64, h=64
+    //   F face:   x=206, y=661, w=64, h=292
+    //   R face:   x=142, y=661, w=64, h=292
+    //   B face:   x=79,  y=661, w=63, h=292
+    //   L face:   x=14,  y=661, w=63, h=292
+    //   Bot cap:  x=206, y=953, w=64, h=64
+    // → Roblox Left Leg:
+    //   Top cap:  x=217, y=290, w=64, h=63
+    //   F face:   x=217, y=355, w=64, h=128
+    //   R face:   x=151, y=355, w=64, h=128
+    //   B face:   x=85,  y=355, w=64, h=128
+    //   L face:   x=19,  y=355, w=64, h=128
+    //   Bot cap:  x=217, y=485, w=64, h=64
+    //
+    // PT Left Leg block (cols 754–1017 bottom):
+    //   Top cap:  x=754, y=597, w=64, h=64
+    //   F face:   x=754, y=661, w=64, h=292
+    //   L face:   x=819, y=661, w=62, h=292
+    //   B face:   x=882, y=661, w=64, h=292
+    //   R face:   x=946, y=661, w=64, h=292
+    //   Bot cap:  x=754, y=953, w=64, h=64
+    // → Roblox Right Leg:
+    //   Top cap:  x=308, y=290, w=64, h=63
+    //   F face:   x=308, y=355, w=64, h=128
+    //   L face:   x=374, y=355, w=64, h=128
+    //   B face:   x=440, y=355, w=64, h=128
+    //   R face:   x=506, y=355, w=64, h=128
+    //   Bot cap:  x=308, y=485, w=64, h=64
+
+    function renderBoth() {
+      sourceCtx.imageSmoothingEnabled = true;
+      sourceCtx.imageSmoothingQuality = 'high';
+
+      shirtCtx.clearRect(0, 0, 585, 559);
+      pantsCtx.clearRect(0, 0, 585, 559);
+
+      // ── TORSO (shared) ────────────────────────────────────────────────
+      [shirtCtx, pantsCtx].forEach(ctx => {
+        blitRegion(ctx, 439, 7,   146, 96,  231, 8,   128, 66);   // Top cap
+        blitRegion(ctx, 440, 103, 144, 290, 231, 74,  128, 128);  // Front
+        blitRegion(ctx, 351, 103, 87,  290, 427, 74,  128, 128);  // Back
+        blitRegion(ctx, 586, 103, 87,  290, 361, 74,  64,  128);  // Left face → Roblox Right side
+        blitRegion(ctx, 439, 430, 146, 59,  231, 202, 128, 66);   // Bottom tab
+      });
+
+      // ── LEGS (shared) ─────────────────────────────────────────────────
+      [shirtCtx, pantsCtx].forEach(ctx => {
+        // PT Right Leg → Roblox Left Leg
+        blitRegion(ctx, 206, 597, 64, 64,  217, 290, 64, 63);
+        blitRegion(ctx, 206, 661, 64, 292, 217, 355, 64, 128);  // F
+        blitRegion(ctx, 142, 661, 64, 292, 151, 355, 64, 128);  // R
+        blitRegion(ctx, 79,  661, 63, 292, 85,  355, 64, 128);  // B
+        blitRegion(ctx, 14,  661, 63, 292, 19,  355, 64, 128);  // L
+        blitRegion(ctx, 206, 953, 64, 64,  217, 485, 64, 64);   // Bot cap
+
+        // PT Left Leg → Roblox Right Leg
+        blitRegion(ctx, 754, 597, 64, 64,  308, 290, 64, 63);
+        blitRegion(ctx, 754, 661, 64, 292, 308, 355, 64, 128);  // F
+        blitRegion(ctx, 819, 661, 62, 292, 374, 355, 64, 128);  // L
+        blitRegion(ctx, 882, 661, 64, 292, 440, 355, 64, 128);  // B
+        blitRegion(ctx, 946, 661, 64, 292, 506, 355, 64, 128);  // R
+        blitRegion(ctx, 754, 953, 64, 64,  308, 485, 64, 64);   // Bot cap
+      });
+
+      // ── ARMS (shirt only) ─────────────────────────────────────────────
+      // PT Right Arm → Roblox Left Arm
+      blitRegion(shirtCtx, 204, 7,   66, 64,  217, 289, 64, 64);
+      blitRegion(shirtCtx, 204, 71,  66, 290, 217, 355, 64, 128);  // F
+      blitRegion(shirtCtx, 138, 71,  66, 290, 151, 355, 64, 128);  // R
+      blitRegion(shirtCtx, 72,  71,  66, 290, 85,  355, 64, 128);  // B
+      blitRegion(shirtCtx, 6,   71,  65, 290, 19,  355, 64, 128);  // L
+      blitRegion(shirtCtx, 204, 361, 66, 64,  217, 485, 64, 64);
+
+      // PT Left Arm → Roblox Right Arm
+      blitRegion(shirtCtx, 754, 7,   66, 64,  308, 289, 64, 64);
+      blitRegion(shirtCtx, 754, 71,  66, 290, 308, 355, 64, 128);  // F
+      blitRegion(shirtCtx, 820, 71,  65, 290, 374, 355, 64, 128);  // L
+      blitRegion(shirtCtx, 886, 71,  66, 290, 440, 355, 64, 128);  // B
+      blitRegion(shirtCtx, 952, 71,  66, 290, 506, 355, 64, 128);  // R
+      blitRegion(shirtCtx, 754, 361, 66, 64,  308, 485, 64, 64);
+
+      // ── Filenames & show preview ──────────────────────────────────────
+      filenames.shirt = generateFilename('shirt');
+      filenames.pants = generateFilename('pants');
+      hasImage = true;
+      copyToPreview(mode === 'shirt' ? shirtCanvas : pantsCanvas);
+      modeBadge.textContent = mode === 'shirt' ? 'SHIRT' : 'PANTS';
+      filenameDisplay.textContent = filenames[mode];
+      previewCard.classList.add('visible');
+    }
+
+    // ── Download ──────────────────────────────────────────────────────────
+    btnDownload.addEventListener('click', () => {
+      const src = mode === 'shirt' ? shirtCanvas : pantsCanvas;
+      const link = document.createElement('a');
+      link.href = src.toDataURL('image/png');
+      link.download = filenames[mode];
+      link.click();
+
+      setTimeout(() => {
+        shirtCtx.clearRect(0, 0, 585, 559);
+        pantsCtx.clearRect(0, 0, 585, 559);
+        sourceCtx.clearRect(0, 0, 1024, 1024);
+        previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+        previewCard.classList.remove('visible');
+        filenameDisplay.textContent = '—';
+        filenames.shirt = ''; filenames.pants = '';
+        hasImage = false;
+      }, 300);
+    });
+  </script>
+</body>
+</html>
