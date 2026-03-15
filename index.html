@@ -444,12 +444,15 @@
       pantsCtx.clearRect(0, 0, 1024, 1024);
 
       // ── TORSO (shared) ────────────────────────────────────────────────
+      // PT torso cross faces (left→right): R(purple,351-437), F(green,440-583), L(red,586-672)
+      // PT has NO back face — Roblox back torso is not mappable.
       [shirtCtx, pantsCtx].forEach(ctx => {
         blitRegion(ctx, 231, 8,   128, 66,  439, 7,   146, 96);   // Top cap
-        blitRegion(ctx, 231, 74,  128, 128, 440, 103, 144, 290);  // Front
-        blitRegion(ctx, 427, 74,  128, 128, 351, 103, 87,  290);  // Back
-        blitRegion(ctx, 361, 74,  64,  128, 586, 103, 87,  290);  // Right → PT Left face
+        blitRegion(ctx, 231, 74,  128, 128, 440, 103, 144, 290);  // Front  → PT Front (green)
+        blitRegion(ctx, 361, 74,  64,  128, 351, 103, 87,  290);  // Right  → PT Right (purple)
+        blitRegion(ctx, 165, 74,  64,  128, 586, 103, 87,  290);  // Left   → PT Left (red)
         blitRegion(ctx, 231, 202, 128, 66,  439, 430, 146, 59);   // Bottom tab
+        // Roblox Back (427,74,128,128) has no PT torso equivalent — omitted
       });
 
       // ── LEGS (shared) ─────────────────────────────────────────────────
