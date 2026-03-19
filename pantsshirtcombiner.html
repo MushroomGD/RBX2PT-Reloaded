@@ -7,69 +7,114 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --pink: #bf4197; --blue: #257fdb; --green: #27a96b; --bg: #141414;
-      --surface: #1e1e1e; --border: #333; --text: #f0f0f0; --muted: #888; --radius: 14px;
-    }
-    body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; overflow-x: hidden; }
 
-    #page-wrapper { min-height: 100vh; width: 100%; opacity: 1; transition: opacity 0.4s ease-in-out; }
+    :root {
+      --pink: #bf4197;
+      --blue: #257fdb;
+      --green: #27a96b;
+      --bg: #141414;
+      --surface: #1e1e1e;
+      --border: #333;
+      --text: #f0f0f0;
+      --muted: #888;
+      --radius: 14px;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Page Transition Wrapper */
+    #page-wrapper {
+        min-height: 100vh;
+        width: 100%;
+        opacity: 1;
+        transition: opacity 0.4s ease-in-out;
+    }
     #page-wrapper.fade-out { opacity: 0; }
 
     .hero {
-      position: relative; overflow: hidden; padding: 52px 24px 80px; text-align: center;
+      position: relative;
+      overflow: hidden;
+      padding: 52px 24px 80px;
+      text-align: center;
       background: linear-gradient(135deg, #0d1f14 0%, #0d1a2e 50%, #1a0d14 100%);
     }
     .hero::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse 50% 70% at 15% 50%, rgba(39,169,107,0.15) 0%, transparent 70%),
-                  radial-gradient(ellipse 40% 60% at 50% 40%, rgba(37,127,219,0.12) 0%, transparent 70%),
-                  radial-gradient(ellipse 50% 70% at 85% 50%, rgba(191,65,151,0.15) 0%, transparent 70%);
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 50% 70% at 15% 50%, rgba(39,169,107,0.15) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 50% 40%, rgba(37,127,219,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 70% at 85% 50%, rgba(191,65,151,0.15) 0%, transparent 70%);
       pointer-events: none;
     }
+    .hero-eyebrow { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); margin-bottom: 12px; }
     .hero h1 {
-      font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 5vw, 3.2rem); font-weight: 800;
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      font-weight: 800; line-height: 1.1; letter-spacing: -0.02em;
       background: linear-gradient(100deg, #27a96b 0%, #257fdb 50%, #bf4197 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 14px;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 14px;
     }
-    .hero-sub a { color: #f59dcc; text-decoration: none; }
+    .hero-sub { font-size: 0.85rem; color: var(--muted); }
+    .hero-sub a { color: #f59dcc; text-decoration: none; font-weight: 500; }
 
     .main { max-width: 720px; margin: 0 auto; padding: 0 20px 60px; }
+
     .upload-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 32px; margin-bottom: 20px; }
     @media (max-width: 520px) { .upload-pair { grid-template-columns: 1fr; } }
 
     .upload-slot {
       border: 1.5px dashed var(--border); border-radius: var(--radius); background: var(--surface);
       padding: 32px 16px; display: flex; flex-direction: column; align-items: center; gap: 8px;
-      cursor: pointer; transition: all 0.2s; text-align: center; position: relative; min-height: 160px; justify-content: center;
+      cursor: pointer; transition: all 0.2s;
+      text-align: center; position: relative; min-height: 160px; justify-content: center;
     }
-    .upload-slot.drag-over { border-color: var(--blue); background: rgba(37,127,219,0.1); }
-    .upload-slot.has-file { border-color: var(--green); border-style: solid; background: rgba(39,169,107,0.06); }
-    
-    .slot-icon { width: 32px; height: 32px; opacity: 0.6; }
-    .slot-label { font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
+    .upload-slot:hover, .upload-slot.drag-over { border-color: var(--blue); background: rgba(37,127,219,0.06); }
+    .upload-slot.has-file { border-color: var(--green); background: rgba(39,169,107,0.06); border-style: solid; }
+
+    .slot-icon { width: 32px; height: 32px; opacity: 0.6; pointer-events: none; }
+    .slot-label { font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; pointer-events: none; }
     .slot-label.shirt { color: var(--blue); }
     .slot-label.pants { color: var(--pink); }
-    .slot-filename { font-size: 0.7rem; color: var(--green); font-family: monospace; word-break: break-all; margin-top: 5px; }
+    .slot-hint { font-size: 0.75rem; color: var(--muted); pointer-events: none; }
+    .slot-filename { font-size: 0.7rem; color: var(--green); font-family: monospace; display: none; word-break: break-all; margin-top: 4px; }
+    .upload-slot.has-file .slot-filename { display: block; }
+    .upload-slot.has-file .slot-hint { display: none; }
 
+    .combine-row { display: flex; justify-content: center; margin-bottom: 20px; }
     .btn-combine {
       font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; padding: 12px 36px;
       border-radius: 999px; border: none; cursor: pointer; color: #fff;
       background: linear-gradient(90deg, var(--green), var(--blue));
-      display: flex; align-items: center; gap: 10px; margin: 0 auto; transition: transform 0.1s;
+      display: flex; align-items: center; gap: 10px; transition: transform 0.1s;
     }
-    .btn-combine:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+    .btn-combine:disabled { opacity: 0.3; cursor: not-allowed; filter: grayscale(1); }
     .btn-combine:active:not(:disabled) { transform: scale(0.98); }
 
     .preview-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: none; margin-top: 20px; }
-    .preview-card.visible { display: block; animation: slideUp 0.3s ease-out; }
-    .canvas-wrap { background: #111; padding: 16px; display: flex; justify-content: center; }
-    #outputCanvas { max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .preview-card.visible { display: block; }
+    .preview-header { padding: 14px 18px; border-bottom: 1px solid var(--border); }
+    .preview-title { font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
     
-    .preview-footer { padding: 14px 18px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-    .btn-download { font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700; padding: 10px 22px; border-radius: 999px; border: none; cursor: pointer; color: #fff; background: var(--green); }
+    .canvas-wrap { background-color: #111; padding: 24px; display: flex; justify-content: center; }
+    #outputCanvas { max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
 
-    @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .preview-footer { padding: 14px 18px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .btn-download {
+      font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700; padding: 10px 22px;
+      border-radius: 999px; border: none; cursor: pointer; color: #fff;
+      background: var(--green); transition: opacity 0.2s;
+    }
+    .btn-download:hover { opacity: 0.9; }
+
+    input[type=file] { display: none; }
   </style>
 </head>
 <body>
@@ -78,42 +123,61 @@
   <div class="hero">
     <p class="hero-eyebrow">Polytoria Clothing</p>
     <h1>Shirt + Pants Combiner</h1>
-    <p class="hero-sub">Also see: <a href="index.html">RBX2PT — Roblox to Polytoria</a></p>
+    <p class="hero-sub">
+      Also see: <a href="index.html">RBX2PT — Roblox to Polytoria</a>
+    </p>
   </div>
 
   <div class="main">
     <div class="upload-pair">
       <div class="upload-slot" id="slotShirt">
-        <svg class="slot-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.86H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.86l.58-3.57a2 2 0 00-1.34-2.23z"/></svg>
+        <svg class="slot-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.86H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.86l.58-3.57a2 2 0 00-1.34-2.23z"/>
+        </svg>
         <span class="slot-label shirt">Shirt</span>
-        <span class="slot-hint" id="shirtHint">Click or Drop Shirt</span>
-        <span class="slot-filename" id="shirtFilename"></span>
+        <span class="slot-hint">Drop shirt texture here</span>
+        <span class="slot-filename" id="shirtFilename">—</span>
       </div>
 
       <div class="upload-slot" id="slotPants">
-        <svg class="slot-icon" viewBox="0 0 24 24" fill="none" stroke="var(--pink)" stroke-width="1.5"><path d="M6 2h12l1 8H5L6 2zM5 10l-1 12h5l2-6 2 6h5L17 10"/></svg>
+        <svg class="slot-icon" viewBox="0 0 24 24" fill="none" stroke="var(--pink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2h12l1 8H5L6 2zM5 10l-1 12h5l2-6 2 6h5L17 10"/>
+        </svg>
         <span class="slot-label pants">Pants</span>
-        <span class="slot-hint" id="pantsHint">Click or Drop Pants</span>
-        <span class="slot-filename" id="pantsFilename"></span>
+        <span class="slot-hint">Drop pants texture here</span>
+        <span class="slot-filename" id="pantsFilename">—</span>
       </div>
     </div>
 
-    <button class="btn-combine" id="btnCombine" disabled>Combine Textures</button>
+    <div class="combine-row">
+      <button class="btn-combine" id="btnCombine" disabled>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+        Combine Textures
+      </button>
+    </div>
 
     <div class="preview-card" id="previewCard">
-      <div class="canvas-wrap"><canvas id="outputCanvas" width="1024" height="1024"></canvas></div>
+      <div class="preview-header">
+        <span class="preview-title">Combined Output</span>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="outputCanvas" width="1024" height="1024"></canvas>
+      </div>
       <div class="preview-footer">
-        <span id="filenameDisplay" style="font-size: 0.75rem; color: var(--muted); font-family: monospace;"></span>
+        <span id="filenameDisplay" style="font-size: 0.75rem; color: var(--muted); font-family: monospace;">—</span>
         <button class="btn-download" id="btnDownload">Download PNG</button>
       </div>
     </div>
   </div>
 </div>
 
-<input type="file" id="inputShirt" accept="image/*">
-<input type="file" id="inputPants" accept="image/*">
+<input type="file" accept="image/*" id="inputShirt">
+<input type="file" accept="image/*" id="inputPants">
 
 <script>
+    // COMBINER LOGIC
     const shirtCanvas = document.createElement('canvas'); shirtCanvas.width = 1024; shirtCanvas.height = 1024;
     const shirtCtx = shirtCanvas.getContext('2d');
     const pantsCanvas = document.createElement('canvas'); pantsCanvas.width = 1024; pantsCanvas.height = 1024;
@@ -121,7 +185,7 @@
     const outputCanvas = document.getElementById('outputCanvas');
     const outputCtx = outputCanvas.getContext('2d');
 
-    let shirtLoaded = false, pantsLoaded = false;
+    let shirtLoaded = false, pantsLoaded = false, currentFilename = '';
 
     function handleFile(file, isShirt) {
         if (!file || !file.type.startsWith('image/')) return;
@@ -132,16 +196,15 @@
                 const ctx = isShirt ? shirtCtx : pantsCtx;
                 ctx.clearRect(0, 0, 1024, 1024);
                 ctx.drawImage(img, 0, 0, 1024, 1024);
-                if (isShirt) { 
-                    shirtLoaded = true; 
+                
+                if (isShirt) {
+                    shirtLoaded = true;
                     document.getElementById('slotShirt').classList.add('has-file');
                     document.getElementById('shirtFilename').textContent = file.name;
-                    document.getElementById('shirtHint').style.display = 'none';
-                } else { 
-                    pantsLoaded = true; 
+                } else {
+                    pantsLoaded = true;
                     document.getElementById('slotPants').classList.add('has-file');
                     document.getElementById('pantsFilename').textContent = file.name;
-                    document.getElementById('pantsHint').style.display = 'none';
                 }
                 document.getElementById('btnCombine').disabled = !(shirtLoaded && pantsLoaded);
             };
@@ -150,48 +213,82 @@
         reader.readAsDataURL(file);
     }
 
-    // Drag & Drop Listeners
-    [ {s: 'slotShirt', i: 'inputShirt', t: true}, {s: 'slotPants', i: 'inputPants', t: false} ].forEach(obj => {
-        const slot = document.getElementById(obj.s);
-        const input = document.getElementById(obj.i);
+    // Setup Slots (Click + Drag/Drop)
+    [ {s: 'slotShirt', i: 'inputShirt', t: true}, {s: 'slotPants', i: 'inputPants', t: false} ].forEach(cfg => {
+        const slot = document.getElementById(cfg.s);
+        const input = document.getElementById(cfg.i);
+        
         slot.addEventListener('click', () => input.click());
-        input.addEventListener('change', (e) => handleFile(e.target.files[0], obj.t));
+        input.addEventListener('change', (e) => handleFile(e.target.files[0], cfg.t));
+        
         slot.addEventListener('dragover', (e) => { e.preventDefault(); slot.classList.add('drag-over'); });
         slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
         slot.addEventListener('drop', (e) => {
             e.preventDefault();
             slot.classList.remove('drag-over');
-            handleFile(e.dataTransfer.files[0], obj.t);
+            if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0], cfg.t);
         });
     });
 
     document.getElementById('btnCombine').addEventListener('click', () => {
         outputCtx.clearRect(0, 0, 1024, 1024);
-        outputCtx.drawImage(pantsCanvas, 0, 0);
-        outputCtx.drawImage(shirtCanvas, 0, 0);
+        outputCtx.drawImage(pantsCanvas, 0, 0); // Pants bottom
+        outputCtx.drawImage(shirtCanvas, 0, 0); // Shirt top
         document.getElementById('previewCard').classList.add('visible');
-        document.getElementById('filenameDisplay').textContent = `combined_${Date.now()}.png`;
+        currentFilename = `combined_${Date.now()}.png`;
+        document.getElementById('filenameDisplay').textContent = currentFilename;
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     });
 
     document.getElementById('btnDownload').addEventListener('click', () => {
         const a = document.createElement('a');
         a.href = outputCanvas.toDataURL('image/png');
-        a.download = document.getElementById('filenameDisplay').textContent;
+        a.download = currentFilename;
         a.click();
     });
 
-    // Simple fade transition for navigation
-    document.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', function(e) {
-            if (this.hostname === window.location.hostname && !this.target && !this.href.includes('#')) {
-                e.preventDefault();
-                const url = this.href;
-                document.getElementById('page-wrapper').classList.add('fade-out');
-                setTimeout(() => window.location.href = url, 400);
-            }
-        });
-    });
+    // SPA FADE SCRIPT (FIXED)
+    (function() {
+        function attachListeners() {
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', async function(e) {
+                    const target = this.href;
+                    if (this.hostname === window.location.hostname && !this.target && !target.includes('#')) {
+                        e.preventDefault();
+                        const wrapper = document.getElementById('page-wrapper');
+                        if (!wrapper) return (window.location.href = target);
+
+                        wrapper.classList.add('fade-out');
+                        try {
+                            const resp = await fetch(target);
+                            const html = await resp.text();
+                            const nextDoc = new DOMParser().parseFromString(html, 'text/html');
+                            const nextContent = nextDoc.querySelector('#page-wrapper');
+
+                            setTimeout(() => {
+                                if (nextContent) {
+                                    wrapper.innerHTML = nextContent.innerHTML;
+                                    document.title = nextDoc.title;
+                                    window.history.pushState({}, '', target);
+                                    attachListeners();
+                                    wrapper.classList.remove('fade-out');
+                                    window.scrollTo(0,0);
+                                } else {
+                                    window.location.href = target;
+                                }
+                            }, 400);
+                        } catch { window.location.href = target; }
+                    }
+                });
+            });
+        }
+        attachListeners();
+        window.addEventListener('popstate', () => location.reload());
+    })();
+
+    // Console Greeting
+    (function(){var _0x14e2=['\x77\x68\x61\x74\x20\x61\x72\x65\x20\x79\x6f\x75\x20\x64\x6f\x69\x6e\x20\x68\x65\x72\x65\x3f\x3f\x3f\x3f\x20\x3a\x29'];(function(_0x5b21,_0x3a10){var _0x4c2b=function(_0x2d0b){while(--_0x2d0b){_0x5b21['push'](_0x5b21['shift']());}};_0x4c2b(++_0x3a10);}(_0x14e2,0x1a2));var _0x2c4a=function(_0x5b21){_0x5b21=_0x5b21-0x0;return _0x14e2[_0x5b21];};console.log("%c"+_0x2c4a('0x0'),"color:#ff0055;font-size:20px;font-weight:bold;");})();
 </script>
+
 </body>
 </html>
