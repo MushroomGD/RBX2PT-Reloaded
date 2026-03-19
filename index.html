@@ -527,5 +527,52 @@
       }, 300);
     });
   </script>
+  <script>
+(function() {
+    const style = document.createElement('style');
+    style.textContent = `
+        body { 
+            opacity: 0; 
+            transition: opacity 0.5s ease-in-out; 
+        }
+        body.fade-in { 
+            opacity: 1; 
+        }
+        body.fade-out { 
+            opacity: 0; 
+        }
+    `;
+    document.head.appendChild(style);
+
+    window.addEventListener('DOMContentLoaded', () => {
+        document.body.classList.add('fade-in');
+
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const isInternal = link.hostname === window.location.hostname;
+                const isNotBlank = link.target !== '_blank';
+                
+                if (isInternal && isNotBlank && link.href.includes('#') === false) {
+                    e.preventDefault();
+                    const target = link.href;
+                    
+                    document.body.classList.add('fade-out');
+                    
+                    setTimeout(() => {
+                        window.location.href = target;
+                    }, 500); // Matches the 0.5s transition
+                }
+            });
+        });
+    });
+
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            document.body.classList.remove('fade-out');
+            document.body.classList.add('fade-in');
+        }
+    });
+})();
+</script>
 </body>
 </html>
