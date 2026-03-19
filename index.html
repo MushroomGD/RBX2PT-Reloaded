@@ -202,31 +202,39 @@
       reader.readAsDataURL(file);
     }
 
-    // ── Alpha check ───────────────────────────────────────────────────────
+    // ── Alpha check (on inner region, skipping outline border) ───────────
     function regionHasPixels(srcX, srcY, srcW, srcH) {
-      // Clamp to canvas bounds before reading
-      const x = Math.max(0, Math.floor(srcX));
-      const y = Math.max(0, Math.floor(srcY));
-      const w = Math.min(sourceCanvas.width - x, Math.ceil(srcW));
-      const h = Math.min(sourceCanvas.height - y, Math.ceil(srcH));
+      const INSET = 4;
+      const x = Math.max(0, Math.floor(srcX + INSET));
+      const y = Math.max(0, Math.floor(srcY + INSET));
+      const w = Math.min(sourceCanvas.width - x,  Math.ceil(srcW - INSET * 2));
+      const h = Math.min(sourceCanvas.height - y, Math.ceil(srcH - INSET * 2));
       if (w <= 0 || h <= 0) return false;
       const data = sourceCtx.getImageData(x, y, w, h).data;
       for (let i = 3; i < data.length; i += 4) if (data[i] > 0) return true;
       return false;
     }
 
-    // ── Blit with bleed (1px expansion on all sides) ──────────────────────
-    // Expanding both src and dst by 1px means edge pixels bleed into the
-    // 1-2px gutters between UV islands, eliminating transparent seam lines.
+    // ── Blit: strips the 4px Roblox outline border, scales inner art to dst,
+    //         then bleeds 1px outward on all dst edges to close UV seam gaps. ──
+    const OUTLINE_INSET = 4;
+    const BLEED = 1;
     function blitRegion(dstCtx, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH) {
       if (!regionHasPixels(srcX, srcY, srcW, srcH)) return;
+      // Inner content only — skip the black outline border
+      const iX = srcX + OUTLINE_INSET;
+      const iY = srcY + OUTLINE_INSET;
+      const iW = srcW - OUTLINE_INSET * 2;
+      const iH = srcH - OUTLINE_INSET * 2;
+      // Expand dst by 1px to bleed into UV seam gutters
       const tmp = document.createElement('canvas');
-      tmp.width = dstW; tmp.height = dstH;
+      tmp.width  = dstW + BLEED * 2;
+      tmp.height = dstH + BLEED * 2;
       const tmpCtx = tmp.getContext('2d');
       tmpCtx.imageSmoothingEnabled = true;
       tmpCtx.imageSmoothingQuality = 'high';
-      tmpCtx.drawImage(sourceCanvas, srcX, srcY, srcW, srcH, 0, 0, dstW, dstH);
-      dstCtx.drawImage(tmp, dstX, dstY);
+      tmpCtx.drawImage(sourceCanvas, iX, iY, iW, iH, 0, 0, tmp.width, tmp.height);
+      dstCtx.drawImage(tmp, dstX - BLEED, dstY - BLEED);
     }
 
     // ── Render both outputs ───────────────────────────────────────────────
@@ -235,41 +243,41 @@
       pantsCtx.clearRect(0, 0, 1024, 1024);
 
       [shirtCtx, pantsCtx].forEach(ctx => {
-        blitRegion(ctx, 230.12, 7.31, 129.75, 67.38, 438, 6, 148, 98);  // Top cap
-        blitRegion(ctx, 230.11, 73.56, 129.78, 128.88, 439, 102, 146, 292);  // Front → PT Front
-        blitRegion(ctx, 164.26, 73.56, 65.47, 128.88, 350, 102, 89, 292);  // Left  → PT R col
-        blitRegion(ctx, 360.26, 73.56, 65.47, 128.88, 585, 102, 89, 292);  // Right → PT L col
-        blitRegion(ctx, 230.12, 203.33, 129.75, 65.35, 438, 393, 148, 97);  // Bottom tab
-        blitRegion(ctx, 426.12, 73.56, 129.75, 128.88, 438, 518, 148, 292);  // Back → PT back
+        blitRegion(ctx, 231, 8,   128, 66,  439, 7,   146, 96);   // Top cap
+        blitRegion(ctx, 231, 74,  128, 128, 440, 103, 144, 290);  // Front
+        blitRegion(ctx, 165, 74,  64,  128, 351, 103, 87,  290);  // Left → PT R col
+        blitRegion(ctx, 361, 74,  64,  128, 586, 103, 87,  290);  // Right → PT L col
+        blitRegion(ctx, 231, 204, 128, 64,  439, 394, 146, 95);   // Bottom tab
+        blitRegion(ctx, 427, 74,  128, 128, 439, 519, 146, 290);  // Back
       });
       // PT Right Leg ← Roblox Left Leg
-      blitRegion(pantsCtx, 216, 289.02, 66, 64.97, 205, 596, 66, 66);  // top cap
-      blitRegion(pantsCtx, 216, 354.56, 66, 128.88, 205, 660, 66, 294);  // F face
-      blitRegion(pantsCtx, 150, 354.56, 66, 128.88, 141, 660, 66, 294);  // R face
-      blitRegion(pantsCtx, 83.98, 354.56, 66.03, 128.88, 78, 660, 65, 294);  // B face
-      blitRegion(pantsCtx, 17.98, 354.56, 66.03, 128.88, 13, 660, 65, 294);  // L face
-      blitRegion(pantsCtx, 216, 484, 66, 66, 205, 952, 66, 66);  // bot cap
+      blitRegion(pantsCtx, 217, 290, 64, 63,  206, 597, 64, 64);   // top cap
+      blitRegion(pantsCtx, 217, 355, 64, 128, 206, 661, 64, 292);  // F face
+      blitRegion(pantsCtx, 151, 355, 64, 128, 142, 661, 64, 292);  // R face
+      blitRegion(pantsCtx, 85,  355, 64, 128, 79,  661, 63, 292);  // B face
+      blitRegion(pantsCtx, 19,  355, 64, 128, 14,  661, 63, 292);  // L face
+      blitRegion(pantsCtx, 217, 485, 64, 64,  206, 953, 64, 64);   // bot cap
       // PT Left Leg ← Roblox Right Leg
-      blitRegion(pantsCtx, 307, 289.02, 66, 64.97, 753, 596, 66, 66);  // top cap
-      blitRegion(pantsCtx, 307, 354.56, 66, 128.88, 753, 660, 66, 294);  // F face
-      blitRegion(pantsCtx, 372.97, 354.56, 66.06, 128.88, 818, 660, 64, 294);  // L face
-      blitRegion(pantsCtx, 439, 354.56, 66, 128.88, 881, 660, 66, 294);  // B face
-      blitRegion(pantsCtx, 505, 354.56, 66, 128.88, 945, 660, 66, 294);  // R face
-      blitRegion(pantsCtx, 307, 484, 66, 66, 753, 952, 66, 66);  // bot cap
+      blitRegion(pantsCtx, 308, 290, 64, 63,  754, 597, 64, 64);   // top cap
+      blitRegion(pantsCtx, 308, 355, 64, 128, 754, 661, 64, 292);  // F face
+      blitRegion(pantsCtx, 374, 355, 64, 128, 819, 661, 62, 292);  // L face
+      blitRegion(pantsCtx, 440, 355, 64, 128, 882, 661, 64, 292);  // B face
+      blitRegion(pantsCtx, 506, 355, 64, 128, 946, 661, 64, 292);  // R face
+      blitRegion(pantsCtx, 308, 485, 64, 64,  754, 953, 64, 64);   // bot cap
       // PT Right Arm ← Roblox Left Arm
-      blitRegion(shirtCtx, 216.03, 288, 65.94, 66, 203, 6, 68, 66);  // top cap
-      blitRegion(shirtCtx, 216.03, 354.56, 65.94, 128.88, 203, 70, 68, 292);  // F face
-      blitRegion(shirtCtx, 150.03, 354.56, 65.94, 128.88, 137, 70, 68, 292);  // R face
-      blitRegion(shirtCtx, 84.03, 354.56, 65.94, 128.88, 71, 70, 68, 292);  // B face
-      blitRegion(shirtCtx, 18.02, 354.56, 65.97, 128.88, 5, 70, 67, 292);  // L face
-      blitRegion(shirtCtx, 216.03, 484, 65.94, 66, 203, 360, 68, 66);  // bot cap
+      blitRegion(shirtCtx, 217, 289, 64, 64,  204, 7,   66, 64);   // top cap
+      blitRegion(shirtCtx, 217, 355, 64, 128, 204, 71,  66, 290);  // F face
+      blitRegion(shirtCtx, 151, 355, 64, 128, 138, 71,  66, 290);  // R face
+      blitRegion(shirtCtx, 85,  355, 64, 128, 72,  71,  66, 290);  // B face
+      blitRegion(shirtCtx, 19,  355, 64, 128, 6,   71,  65, 290);  // L face
+      blitRegion(shirtCtx, 217, 485, 64, 64,  204, 361, 66, 64);   // bot cap
       // PT Left Arm ← Roblox Right Arm
-      blitRegion(shirtCtx, 307.03, 288, 65.94, 66, 753, 6, 68, 66);  // top cap
-      blitRegion(shirtCtx, 307.03, 354.56, 65.94, 128.88, 753, 70, 68, 292);  // F face
-      blitRegion(shirtCtx, 373.02, 354.56, 65.97, 128.88, 819, 70, 67, 292);  // L face
-      blitRegion(shirtCtx, 439.03, 354.56, 65.94, 128.88, 885, 70, 68, 292);  // B face
-      blitRegion(shirtCtx, 505.03, 354.56, 65.94, 128.88, 951, 70, 68, 292);  // R face
-      blitRegion(shirtCtx, 307.03, 484, 65.94, 66, 753, 360, 68, 66);  // bot cap
+      blitRegion(shirtCtx, 308, 289, 64, 64,  754, 7,   66, 64);   // top cap
+      blitRegion(shirtCtx, 308, 355, 64, 128, 754, 71,  66, 290);  // F face
+      blitRegion(shirtCtx, 374, 355, 64, 128, 820, 71,  65, 290);  // L face
+      blitRegion(shirtCtx, 440, 355, 64, 128, 886, 71,  66, 290);  // B face
+      blitRegion(shirtCtx, 506, 355, 64, 128, 952, 71,  66, 290);  // R face
+      blitRegion(shirtCtx, 308, 485, 64, 64,  754, 361, 66, 64);   // bot cap
 
       // ── Generate filenames & show preview ─────────────────────────────
       filenames.shirt = generateFilename('shirt');
