@@ -7,236 +7,43 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --pink: #bf4197;
-      --blue: #257fdb;
-      --bg: #141414;
-      --surface: #1e1e1e;
-      --border: #333;
-      --text: #f0f0f0;
-      --muted: #888;
-      --radius: 14px;
+      --pink: #bf4197; --blue: #257fdb; --bg: #141414; --surface: #1e1e1e;
+      --border: #333; --text: #f0f0f0; --muted: #888; --radius: 14px;
     }
-
-    body {
-      background: var(--bg);
-      font-family: 'DM Sans', sans-serif;
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    /* ── Hero ── */
-    .hero {
-      position: relative;
-      overflow: hidden;
-      padding: 52px 24px 80px;
-      text-align: center;
-      background: linear-gradient(135deg, #1a0d14 0%, #0d1a2e 100%);
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 60% 80% at 20% 50%, rgba(191,65,151,0.18) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 70% at 80% 40%, rgba(37,127,219,0.15) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-eyebrow {
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--pink);
-      margin-bottom: 12px;
-    }
-    .hero h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(1.8rem, 5vw, 3.2rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      background: linear-gradient(100deg, #fff 30%, #bf4197 70%, #257fdb 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 14px;
-    }
+    body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; }
+    .hero { position: relative; overflow: hidden; padding: 52px 24px 80px; text-align: center; background: linear-gradient(135deg, #1a0d14 0%, #0d1a2e 100%); }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 20% 50%, rgba(191,65,151,0.18) 0%, transparent 70%), radial-gradient(ellipse 50% 70% at 80% 40%, rgba(37,127,219,0.15) 0%, transparent 70%); pointer-events: none; }
+    .hero-eyebrow { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--pink); margin-bottom: 12px; }
+    .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; background: linear-gradient(100deg, #fff 30%, #bf4197 70%, #257fdb 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 14px; }
     .hero-sub { font-size: 0.85rem; color: var(--muted); }
     .hero-sub a { color: #7ab8f5; text-decoration: none; }
     .hero-sub a:hover { text-decoration: underline; }
-
-    /* ── Main ── */
-    .main {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 0 20px 60px;
-    }
-
-    /* ── Mode toggle ── */
-    .mode-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      margin-top: -28px;
-      margin-bottom: 28px;
-      position: relative;
-      z-index: 10;
-    }
-    .mode-pill {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      padding: 5px;
-      gap: 4px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
-    }
-    .mode-btn {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      padding: 8px 22px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      background: transparent;
-      color: var(--muted);
-    }
-    .mode-btn.active {
-      background: linear-gradient(90deg, var(--pink), var(--blue));
-      color: #fff;
-    }
-
-    /* ── Upload zone ── */
+    .main { max-width: 720px; margin: 0 auto; padding: 0 20px 60px; }
+    .mode-row { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: -28px; margin-bottom: 28px; position: relative; z-index: 10; }
+    .mode-pill { background: var(--surface); border: 1px solid var(--border); border-radius: 999px; display: flex; align-items: center; padding: 5px; gap: 4px; box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
+    .mode-btn { font-family: 'Syne', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; padding: 8px 22px; border-radius: 999px; border: none; cursor: pointer; transition: background 0.2s, color 0.2s; background: transparent; color: var(--muted); }
+    .mode-btn.active { background: linear-gradient(90deg, var(--pink), var(--blue)); color: #fff; }
     .upload-wrap { margin-bottom: 20px; }
-    .upload-zone {
-      border: 1.5px dashed var(--border);
-      border-radius: var(--radius);
-      background: var(--surface);
-      padding: 48px 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-      text-align: center;
-    }
-    .upload-zone:hover, .upload-zone.drag-over {
-      border-color: var(--pink);
-      background: rgba(191,65,151,0.06);
-      box-shadow: 0 0 0 4px rgba(191,65,151,0.08);
-    }
+    .upload-zone { border: 1.5px dashed var(--border); border-radius: var(--radius); background: var(--surface); padding: 48px 24px; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; text-align: center; }
+    .upload-zone:hover, .upload-zone.drag-over { border-color: var(--pink); background: rgba(191,65,151,0.06); box-shadow: 0 0 0 4px rgba(191,65,151,0.08); }
     .upload-icon { width: 40px; height: 40px; color: var(--pink); opacity: 0.8; }
     .upload-label { font-size: 0.95rem; font-weight: 500; color: var(--text); }
     .upload-hint { font-size: 0.78rem; color: var(--muted); }
-
-    /* ── Preview card ── */
-    .preview-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      display: none;
-    }
+    .preview-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: none; }
     .preview-card.visible { display: block; }
-
-    .preview-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 18px;
-      border-bottom: 1px solid var(--border);
-    }
-    .preview-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
-    .preview-badge {
-      font-size: 0.7rem;
-      font-weight: 500;
-      padding: 3px 10px;
-      border-radius: 999px;
-      background: rgba(191,65,151,0.15);
-      color: var(--pink);
-      border: 1px solid rgba(191,65,151,0.3);
-      transition: opacity 0.15s;
-    }
-
-    .canvas-wrap {
-      background-color: #444;
-      background-image:
-        linear-gradient(45deg, #555 25%, transparent 25%),
-        linear-gradient(-45deg, #555 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, #555 75%),
-        linear-gradient(-45deg, transparent 75%, #555 75%);
-      background-size: 16px 16px;
-      background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
-      padding: 16px;
-      display: flex;
-      justify-content: center;
-      position: relative;
-    }
-
-    /* The visible preview canvas */
-    #previewCanvas {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 6px;
-      transition: opacity 0.15s;
-    }
+    .preview-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--border); }
+    .preview-title { font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; color: var(--muted); text-transform: uppercase; }
+    .preview-badge { font-size: 0.7rem; font-weight: 500; padding: 3px 10px; border-radius: 999px; background: rgba(191,65,151,0.15); color: var(--pink); border: 1px solid rgba(191,65,151,0.3); }
+    .canvas-wrap { background-color: #444; background-image: linear-gradient(45deg, #555 25%, transparent 25%), linear-gradient(-45deg, #555 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #555 75%), linear-gradient(-45deg, transparent 75%, #555 75%); background-size: 16px 16px; background-position: 0 0, 0 8px, 8px -8px, -8px 0px; padding: 16px; display: flex; justify-content: center; }
+    #previewCanvas { max-width: 100%; height: auto; display: block; border-radius: 6px; transition: opacity 0.15s; }
     #previewCanvas.switching { opacity: 0; }
-
-    .preview-footer {
-      padding: 14px 18px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .preview-filename {
-      font-size: 0.75rem;
-      color: var(--muted);
-      font-family: monospace;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      flex: 1;
-    }
-
-    .btn-download {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      padding: 10px 22px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(90deg, var(--pink), var(--blue));
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: opacity 0.15s, transform 0.15s;
-      flex-shrink: 0;
-    }
+    .preview-footer { padding: 14px 18px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .preview-filename { font-size: 0.75rem; color: var(--muted); font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+    .btn-download { font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; padding: 10px 22px; border-radius: 999px; border: none; cursor: pointer; background: linear-gradient(90deg, var(--pink), var(--blue)); color: #fff; display: flex; align-items: center; gap: 8px; transition: opacity 0.15s, transform 0.15s; flex-shrink: 0; }
     .btn-download:hover { opacity: 0.88; transform: translateY(-1px); }
     .btn-download:active { transform: translateY(0); opacity: 1; }
     .btn-download svg { width: 14px; height: 14px; }
-
     #imageInput { display: none; }
   </style>
 </head>
@@ -250,11 +57,11 @@
       &nbsp;·&nbsp;
       <a href="pantsshirtcombiner.html">Shirt + Pants Combiner</a>
       &nbsp;·&nbsp;
+      <a href="preview.html">3D Preview</a>
     </p>
   </div>
 
   <div class="main">
-
     <div class="mode-row">
       <div class="mode-pill">
         <button class="mode-btn active" id="btn-shirt">SHIRT</button>
@@ -292,19 +99,16 @@
         </button>
       </div>
     </div>
-
   </div>
 
   <input type="file" accept="image/*" id="imageInput">
 
   <script>
     // ── Off-screen canvases ────────────────────────────────────────────────
-    // source: the uploaded Roblox texture
     const sourceCanvas = document.createElement('canvas');
     sourceCanvas.width = 585; sourceCanvas.height = 559;
     const sourceCtx = sourceCanvas.getContext('2d', { willReadFrequently: true });
 
-    // shirtCanvas / pantsCanvas: pre-rendered outputs
     const shirtCanvas = document.createElement('canvas');
     shirtCanvas.width = 1024; shirtCanvas.height = 1024;
     const shirtCtx = shirtCanvas.getContext('2d', { willReadFrequently: true });
@@ -313,25 +117,23 @@
     pantsCanvas.width = 1024; pantsCanvas.height = 1024;
     const pantsCtx = pantsCanvas.getContext('2d', { willReadFrequently: true });
 
-    // previewCanvas: what the user sees
     const previewCanvas = document.getElementById('previewCanvas');
     const previewCtx = previewCanvas.getContext('2d');
 
     // ── State ─────────────────────────────────────────────────────────────
-    let mode = 'shirt';
-    let hasImage = false;
+    let mode = 'shirt', hasImage = false;
     const filenames = { shirt: '', pants: '' };
     const recentSuffixes = new Set();
 
     // ── DOM refs ──────────────────────────────────────────────────────────
-    const uploadZone    = document.getElementById('uploadZone');
-    const imageInput    = document.getElementById('imageInput');
-    const previewCard   = document.getElementById('previewCard');
-    const btnDownload   = document.getElementById('btnDownload');
+    const uploadZone      = document.getElementById('uploadZone');
+    const imageInput      = document.getElementById('imageInput');
+    const previewCard     = document.getElementById('previewCard');
+    const btnDownload     = document.getElementById('btnDownload');
     const filenameDisplay = document.getElementById('filenameDisplay');
-    const modeBadge     = document.getElementById('modeBadge');
-    const btnShirt      = document.getElementById('btn-shirt');
-    const btnPants      = document.getElementById('btn-pants');
+    const modeBadge       = document.getElementById('modeBadge');
+    const btnShirt        = document.getElementById('btn-shirt');
+    const btnPants        = document.getElementById('btn-pants');
 
     // ── Mode toggle ───────────────────────────────────────────────────────
     btnShirt.addEventListener('click', () => setMode('shirt'));
@@ -367,40 +169,24 @@
       const mm = String(now.getMonth() + 1).padStart(2, '0');
       const yy = String(now.getFullYear()).slice(-2);
       const dateStr = dd + mm + yy;
-
-      let suffix;
-      let attempts = 0;
-      do {
-        suffix = String(Math.floor(100000 + Math.random() * 900000));
-        attempts++;
-      } while (recentSuffixes.has(suffix) && attempts < 100);
-
+      let suffix, attempts = 0;
+      do { suffix = String(Math.floor(100000 + Math.random() * 900000)); attempts++; }
+      while (recentSuffixes.has(suffix) && attempts < 100);
       recentSuffixes.add(suffix);
-      if (recentSuffixes.size > 40) {
-        recentSuffixes.delete(recentSuffixes.values().next().value);
-      }
-
-      const label = type === 'pants' ? 'Pants' : 'Shirt';
-      return `${label}_${dateStr}${suffix}.png`;
+      if (recentSuffixes.size > 40) recentSuffixes.delete(recentSuffixes.values().next().value);
+      return `${type === 'pants' ? 'Pants' : 'Shirt'}_${dateStr}${suffix}.png`;
     }
 
     // ── Upload handling ───────────────────────────────────────────────────
     uploadZone.addEventListener('click', () => imageInput.click());
-    uploadZone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      uploadZone.classList.add('drag-over');
-    });
+    uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
     uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
     uploadZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      uploadZone.classList.remove('drag-over');
+      e.preventDefault(); uploadZone.classList.remove('drag-over');
       const file = e.dataTransfer.files[0];
       if (file) processFile(file);
     });
-    imageInput.addEventListener('change', (e) => {
-      if (e.target.files[0]) processFile(e.target.files[0]);
-      imageInput.value = '';
-    });
+    imageInput.addEventListener('change', (e) => { if (e.target.files[0]) processFile(e.target.files[0]); imageInput.value = ''; });
 
     function processFile(file) {
       const reader = new FileReader();
@@ -418,14 +204,20 @@
 
     // ── Alpha check ───────────────────────────────────────────────────────
     function regionHasPixels(srcX, srcY, srcW, srcH) {
-      const data = sourceCtx.getImageData(srcX, srcY, srcW, srcH).data;
-      for (let i = 3; i < data.length; i += 4) {
-        if (data[i] > 0) return true;
-      }
+      // Clamp to canvas bounds before reading
+      const x = Math.max(0, Math.floor(srcX));
+      const y = Math.max(0, Math.floor(srcY));
+      const w = Math.min(sourceCanvas.width - x, Math.ceil(srcW));
+      const h = Math.min(sourceCanvas.height - y, Math.ceil(srcH));
+      if (w <= 0 || h <= 0) return false;
+      const data = sourceCtx.getImageData(x, y, w, h).data;
+      for (let i = 3; i < data.length; i += 4) if (data[i] > 0) return true;
       return false;
     }
 
-    // ── Blit onto a given destination context ─────────────────────────────
+    // ── Blit with bleed (1px expansion on all sides) ──────────────────────
+    // Expanding both src and dst by 1px means edge pixels bleed into the
+    // 1-2px gutters between UV islands, eliminating transparent seam lines.
     function blitRegion(dstCtx, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH) {
       if (!regionHasPixels(srcX, srcY, srcW, srcH)) return;
       const tmp = document.createElement('canvas');
@@ -439,64 +231,49 @@
 
     // ── Render both outputs ───────────────────────────────────────────────
     function renderBoth() {
-      sourceCtx.imageSmoothingEnabled = true;
-      sourceCtx.imageSmoothingQuality = 'high';
-
-      // Clear both off-screen canvases
       shirtCtx.clearRect(0, 0, 1024, 1024);
       pantsCtx.clearRect(0, 0, 1024, 1024);
 
-      // ── TORSO (shared) ────────────────────────────────────────────────
-      // PT torso cross faces (left→right): R(purple,351-437), F(green,440-583), L(red,586-672)
-      // PT has NO back face — Roblox back torso is not mappable.
       [shirtCtx, pantsCtx].forEach(ctx => {
-        blitRegion(ctx, 231, 8,   128, 66,  439, 7,   146, 96);   // Top cap
-        blitRegion(ctx, 231, 74,  128, 128, 440, 103, 144, 290);  // Front  → PT Front (green)
-        blitRegion(ctx, 165, 74,  64,  128, 351, 103, 87,  290);  // Left   → PT R col (purple)
-        blitRegion(ctx, 361, 74,  64,  128, 586, 103, 87,  290);  // Right  → PT L col (red)
-        blitRegion(ctx, 231, 202, 128, 66,  439, 430, 146, 59);   // Bottom tab
-        blitRegion(ctx, 427, 74,  128, 128, 439, 519, 146, 290);  // Back → PT back (cyan block below cross)
+        blitRegion(ctx, 230.12, 7.31, 129.75, 67.38, 438, 6, 148, 98);  // Top cap
+        blitRegion(ctx, 230.11, 73.56, 129.78, 128.88, 439, 102, 146, 292);  // Front → PT Front
+        blitRegion(ctx, 164.26, 73.56, 65.47, 128.88, 350, 102, 89, 292);  // Left  → PT R col
+        blitRegion(ctx, 360.26, 73.56, 65.47, 128.88, 585, 102, 89, 292);  // Right → PT L col
+        blitRegion(ctx, 230.12, 200.88, 129.75, 68.24, 438, 429, 148, 61);  // Bottom tab
+        blitRegion(ctx, 426.12, 73.56, 129.75, 128.88, 438, 518, 148, 292);  // Back → PT back
       });
-
-      // ── LEGS (pants only) ────────────────────────────────────────────
-      // Shirt arm regions share the same source coords as legs — only map
-      // leg data when we actually have a pants template.
       // PT Right Leg ← Roblox Left Leg
-      blitRegion(pantsCtx, 217, 290, 64, 63,  206, 597, 64, 64);
-      blitRegion(pantsCtx, 217, 355, 64, 128, 206, 661, 64, 292);
-      blitRegion(pantsCtx, 151, 355, 64, 128, 142, 661, 64, 292);
-      blitRegion(pantsCtx, 85,  355, 64, 128, 79,  661, 63, 292);
-      blitRegion(pantsCtx, 19,  355, 64, 128, 14,  661, 63, 292);
-      blitRegion(pantsCtx, 217, 485, 64, 64,  206, 953, 64, 64);
+      blitRegion(pantsCtx, 216, 289.02, 66, 64.97, 205, 596, 66, 66);  // top cap
+      blitRegion(pantsCtx, 216, 354.56, 66, 128.88, 205, 660, 66, 294);  // F face
+      blitRegion(pantsCtx, 150, 354.56, 66, 128.88, 141, 660, 66, 294);  // R face
+      blitRegion(pantsCtx, 83.98, 354.56, 66.03, 128.88, 78, 660, 65, 294);  // B face
+      blitRegion(pantsCtx, 17.98, 354.56, 66.03, 128.88, 13, 660, 65, 294);  // L face
+      blitRegion(pantsCtx, 216, 484, 66, 66, 205, 952, 66, 66);  // bot cap
       // PT Left Leg ← Roblox Right Leg
-      blitRegion(pantsCtx, 308, 290, 64, 63,  754, 597, 64, 64);
-      blitRegion(pantsCtx, 308, 355, 64, 128, 754, 661, 64, 292);
-      blitRegion(pantsCtx, 374, 355, 64, 128, 819, 661, 62, 292);
-      blitRegion(pantsCtx, 440, 355, 64, 128, 882, 661, 64, 292);
-      blitRegion(pantsCtx, 506, 355, 64, 128, 946, 661, 64, 292);
-      blitRegion(pantsCtx, 308, 485, 64, 64,  754, 953, 64, 64);
-
-      // ── ARMS (shirt only) ─────────────────────────────────────────────
+      blitRegion(pantsCtx, 307, 289.02, 66, 64.97, 753, 596, 66, 66);  // top cap
+      blitRegion(pantsCtx, 307, 354.56, 66, 128.88, 753, 660, 66, 294);  // F face
+      blitRegion(pantsCtx, 372.97, 354.56, 66.06, 128.88, 818, 660, 64, 294);  // L face
+      blitRegion(pantsCtx, 439, 354.56, 66, 128.88, 881, 660, 66, 294);  // B face
+      blitRegion(pantsCtx, 505, 354.56, 66, 128.88, 945, 660, 66, 294);  // R face
+      blitRegion(pantsCtx, 307, 484, 66, 66, 753, 952, 66, 66);  // bot cap
       // PT Right Arm ← Roblox Left Arm
-      blitRegion(shirtCtx, 217, 289, 64, 64,  204, 7,   66, 64);
-      blitRegion(shirtCtx, 217, 355, 64, 128, 204, 71,  66, 290);
-      blitRegion(shirtCtx, 151, 355, 64, 128, 138, 71,  66, 290);
-      blitRegion(shirtCtx, 85,  355, 64, 128, 72,  71,  66, 290);
-      blitRegion(shirtCtx, 19,  355, 64, 128, 6,   71,  65, 290);
-      blitRegion(shirtCtx, 217, 485, 64, 64,  204, 361, 66, 64);
+      blitRegion(shirtCtx, 216.03, 288, 65.94, 66, 203, 6, 68, 66);  // top cap
+      blitRegion(shirtCtx, 216.03, 354.56, 65.94, 128.88, 203, 70, 68, 292);  // F face
+      blitRegion(shirtCtx, 150.03, 354.56, 65.94, 128.88, 137, 70, 68, 292);  // R face
+      blitRegion(shirtCtx, 84.03, 354.56, 65.94, 128.88, 71, 70, 68, 292);  // B face
+      blitRegion(shirtCtx, 18.02, 354.56, 65.97, 128.88, 5, 70, 67, 292);  // L face
+      blitRegion(shirtCtx, 216.03, 484, 65.94, 66, 203, 360, 68, 66);  // bot cap
       // PT Left Arm ← Roblox Right Arm
-      blitRegion(shirtCtx, 308, 289, 64, 64,  754, 7,   66, 64);
-      blitRegion(shirtCtx, 308, 355, 64, 128, 754, 71,  66, 290);
-      blitRegion(shirtCtx, 374, 355, 64, 128, 820, 71,  65, 290);
-      blitRegion(shirtCtx, 440, 355, 64, 128, 886, 71,  66, 290);
-      blitRegion(shirtCtx, 506, 355, 64, 128, 952, 71,  66, 290);
-      blitRegion(shirtCtx, 308, 485, 64, 64,  754, 361, 66, 64);
+      blitRegion(shirtCtx, 307.03, 288, 65.94, 66, 753, 6, 68, 66);  // top cap
+      blitRegion(shirtCtx, 307.03, 354.56, 65.94, 128.88, 753, 70, 68, 292);  // F face
+      blitRegion(shirtCtx, 373.02, 354.56, 65.97, 128.88, 819, 70, 67, 292);  // L face
+      blitRegion(shirtCtx, 439.03, 354.56, 65.94, 128.88, 885, 70, 68, 292);  // B face
+      blitRegion(shirtCtx, 505.03, 354.56, 65.94, 128.88, 951, 70, 68, 292);  // R face
+      blitRegion(shirtCtx, 307.03, 484, 65.94, 66, 753, 360, 68, 66);  // bot cap
 
-      // ── Generate filenames for both ───────────────────────────────────
+      // ── Generate filenames & show preview ─────────────────────────────
       filenames.shirt = generateFilename('shirt');
       filenames.pants = generateFilename('pants');
-
-      // ── Show preview for current mode ────────────────────────────────
       hasImage = true;
       copyToPreview(mode === 'shirt' ? shirtCanvas : pantsCanvas);
       modeBadge.textContent = mode === 'shirt' ? 'SHIRT' : 'PANTS';
@@ -511,8 +288,6 @@
       link.href = src.toDataURL('image/png');
       link.download = filenames[mode];
       link.click();
-
-      // Clear everything after a short delay
       setTimeout(() => {
         shirtCtx.clearRect(0, 0, 1024, 1024);
         pantsCtx.clearRect(0, 0, 1024, 1024);
@@ -520,8 +295,7 @@
         previewCtx.clearRect(0, 0, 1024, 1024);
         previewCard.classList.remove('visible');
         filenameDisplay.textContent = '—';
-        filenames.shirt = '';
-        filenames.pants = '';
+        filenames.shirt = ''; filenames.pants = '';
         hasImage = false;
       }, 300);
     });
