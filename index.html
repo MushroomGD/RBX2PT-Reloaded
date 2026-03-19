@@ -1,67 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>RBX2PT-Reloaded</title>
+  <title>RBX → Polytoria</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --pink: #bf4197; --blue: #257fdb; --bg: #141414; --surface: #1e1e1e;
-      --border: #333; --text: #f0f0f0; --muted: #888; --radius: 14px;
-    }
-    body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; overflow-x: hidden; }
-    
-    #page-wrapper { min-height: 100vh; width: 100%; opacity: 1; transition: opacity 0.4s ease-in-out; }
-    #page-wrapper.fade-out { opacity: 0; }
 
+    :root {
+      --pink: #bf4197;
+      --blue: #257fdb;
+      --bg: #141414;
+      --surface: #1e1e1e;
+      --border: #333;
+      --text: #f0f0f0;
+      --muted: #888;
+      --radius: 14px;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Hero ── */
     .hero {
-      position: relative; overflow: hidden; padding: 52px 24px 80px; text-align: center;
+      position: relative;
+      overflow: hidden;
+      padding: 52px 24px 80px;
+      text-align: center;
       background: linear-gradient(135deg, #1a0d14 0%, #0d1a2e 100%);
     }
     .hero::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse 60% 80% at 20% 50%, rgba(191,65,151,0.18) 0%, transparent 70%),
-                  radial-gradient(ellipse 50% 70% at 80% 40%, rgba(37,127,219,0.15) 0%, transparent 70%);
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 20% 50%, rgba(191,65,151,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 70% at 80% 40%, rgba(37,127,219,0.15) 0%, transparent 70%);
       pointer-events: none;
     }
-    .hero-eyebrow { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--pink); margin-bottom: 12px; }
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: 12px;
+    }
     .hero h1 {
-      font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.1;
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
       background: linear-gradient(100deg, #fff 30%, #bf4197 70%, #257fdb 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 14px;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 14px;
     }
     .hero-sub { font-size: 0.85rem; color: var(--muted); }
     .hero-sub a { color: #7ab8f5; text-decoration: none; }
-    .main { max-width: 720px; margin: 0 auto; padding: 0 20px 60px; }
-    .mode-row { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: -28px; margin-bottom: 28px; position: relative; z-index: 10; }
-    .mode-pill { background: var(--surface); border: 1px solid var(--border); border-radius: 999px; display: flex; padding: 5px; box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
-    .mode-btn { font-family: 'Syne', sans-serif; font-size: 0.75rem; font-weight: 700; padding: 8px 22px; border-radius: 999px; border: none; cursor: pointer; background: transparent; color: var(--muted); }
-    .mode-btn.active { background: linear-gradient(90deg, var(--pink), var(--blue)); color: #fff; }
-    .upload-zone { border: 1.5px dashed var(--border); border-radius: var(--radius); background: var(--surface); padding: 48px 24px; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; text-align: center; }
-    .upload-zone:hover { border-color: var(--pink); background: rgba(191,65,151,0.06); }
-    .upload-icon { width: 40px; height: 40px; color: var(--pink); }
-    .preview-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: none; margin-top: 20px; }
+    .hero-sub a:hover { text-decoration: underline; }
+
+    /* ── Main ── */
+    .main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    /* ── Mode toggle ── */
+    .mode-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: -28px;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 10;
+    }
+    .mode-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      padding: 5px;
+      gap: 4px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    }
+    .mode-btn {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 8px 22px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      background: transparent;
+      color: var(--muted);
+    }
+    .mode-btn.active {
+      background: linear-gradient(90deg, var(--pink), var(--blue));
+      color: #fff;
+    }
+
+    /* ── Upload zone ── */
+    .upload-wrap { margin-bottom: 20px; }
+    .upload-zone {
+      border: 1.5px dashed var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 48px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+      text-align: center;
+    }
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: var(--pink);
+      background: rgba(191,65,151,0.06);
+      box-shadow: 0 0 0 4px rgba(191,65,151,0.08);
+    }
+    .upload-icon { width: 40px; height: 40px; color: var(--pink); opacity: 0.8; }
+    .upload-label { font-size: 0.95rem; font-weight: 500; color: var(--text); }
+    .upload-hint { font-size: 0.78rem; color: var(--muted); }
+
+    /* ── Preview card ── */
+    .preview-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: none;
+    }
     .preview-card.visible { display: block; }
-    .preview-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--border); }
-    .canvas-wrap { background-color: #444; padding: 16px; display: flex; justify-content: center; }
-    #previewCanvas { max-width: 100%; height: auto; border-radius: 6px; }
-    .preview-footer { padding: 14px 18px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-    .btn-download { font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700; padding: 10px 22px; border-radius: 999px; border: none; cursor: pointer; background: linear-gradient(90deg, var(--pink), var(--blue)); color: #fff; display: flex; align-items: center; gap: 8px; }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .preview-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .preview-badge {
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(191,65,151,0.15);
+      color: var(--pink);
+      border: 1px solid rgba(191,65,151,0.3);
+      transition: opacity 0.15s;
+    }
+
+    .canvas-wrap {
+      background-color: #444;
+      background-image:
+        linear-gradient(45deg, #555 25%, transparent 25%),
+        linear-gradient(-45deg, #555 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #555 75%),
+        linear-gradient(-45deg, transparent 75%, #555 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* The visible preview canvas */
+    #previewCanvas {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 6px;
+      transition: opacity 0.15s;
+    }
+    #previewCanvas.switching { opacity: 0; }
+
+    .preview-footer {
+      padding: 14px 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .preview-filename {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+
+    .btn-download {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 10px 22px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(90deg, var(--pink), var(--blue));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.15s, transform 0.15s;
+      flex-shrink: 0;
+    }
+    .btn-download:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-download:active { transform: translateY(0); opacity: 1; }
+    .btn-download svg { width: 14px; height: 14px; }
+
     #imageInput { display: none; }
   </style>
 </head>
 <body>
 
-<div id="page-wrapper">
   <div class="hero">
     <p class="hero-eyebrow">Clothing Converter</p>
     <h1>Roblox → Polytoria</h1>
-    <p class="hero-sub">Also see: <a href="pt2rbx.html">PT2RBX</a> · <a href="pantsshirtcombiner.html">Combiner</a></p>
+    <p class="hero-sub">
+      Also see: <a href="pt2rbx.html">PT2RBX — Polytoria to Roblox</a>
+      &nbsp;·&nbsp;
+      <a href="PantsShirtCombiner.html">Shirt + Pants Combiner</a>
+      &nbsp;·&nbsp;
+      <a href="preview.html">3D Preview</a>
+    </p>
   </div>
 
   <div class="main">
+
     <div class="mode-row">
       <div class="mode-pill">
         <button class="mode-btn active" id="btn-shirt">SHIRT</button>
@@ -69,129 +263,269 @@
       </div>
     </div>
 
-    <div class="upload-zone" id="uploadZone">
-      <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4m0 0L8 8m4-4l4 4M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1"/></svg>
-      <span class="upload-label">Drop your Roblox template here</span>
+    <div class="upload-wrap">
+      <div class="upload-zone" id="uploadZone">
+        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16V4m0 0L8 8m4-4l4 4"/>
+          <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1"/>
+        </svg>
+        <span class="upload-label">Drop your Roblox template here</span>
+        <span class="upload-hint">or click to browse — PNG, JPG accepted</span>
+      </div>
     </div>
 
     <div class="preview-card" id="previewCard">
-      <div class="preview-header"><span class="preview-title">Output Preview</span><span id="modeBadge" style="color:var(--pink);font-size:0.7rem;font-weight:700;">SHIRT</span></div>
-      <div class="canvas-wrap"><canvas id="previewCanvas" width="1024" height="1024"></canvas></div>
-      <div class="preview-footer"><span id="filenameDisplay" style="font-size:0.75rem;color:var(--muted);font-family:monospace;">—</span><button class="btn-download" id="btnDownload">Download</button></div>
+      <div class="preview-header">
+        <span class="preview-title">Output Preview</span>
+        <span class="preview-badge" id="modeBadge">SHIRT</span>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="previewCanvas" width="1024" height="1024"></canvas>
+      </div>
+      <div class="preview-footer">
+        <span class="preview-filename" id="filenameDisplay">—</span>
+        <button class="btn-download" id="btnDownload">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 4v12m0 0l-4-4m4 4l4-4"/>
+            <path d="M4 18h16"/>
+          </svg>
+          Download
+        </button>
+      </div>
     </div>
+
   </div>
-</div>
 
-<input type="file" id="imageInput" accept="image/*">
+  <input type="file" accept="image/*" id="imageInput">
 
-<script>
-  const srcCanv = document.createElement('canvas'); srcCanv.width = 585; srcCanv.height = 559;
-  const srcCtx = srcCanv.getContext('2d');
-  const outShirt = document.createElement('canvas'); outShirt.width = 1024; outShirt.height = 1024;
-  const outPants = document.createElement('canvas'); outPants.width = 1024; outPants.height = 1024;
-  const prevCanv = document.getElementById('previewCanvas');
-  const prevCtx = prevCanv.getContext('2d');
+  <script>
+    // ── Off-screen canvases ────────────────────────────────────────────────
+    // source: the uploaded Roblox texture
+    const sourceCanvas = document.createElement('canvas');
+    sourceCanvas.width = 585; sourceCanvas.height = 559;
+    const sourceCtx = sourceCanvas.getContext('2d', { willReadFrequently: true });
 
-  let mode = 'shirt', hasImg = false;
-  const fNames = { shirt: '', pants: '' };
+    // shirtCanvas / pantsCanvas: pre-rendered outputs
+    const shirtCanvas = document.createElement('canvas');
+    shirtCanvas.width = 1024; shirtCanvas.height = 1024;
+    const shirtCtx = shirtCanvas.getContext('2d', { willReadFrequently: true });
 
-  const setMode = (m) => {
-    mode = m;
-    document.getElementById('btn-shirt').classList.toggle('active', m === 'shirt');
-    document.getElementById('btn-pants').classList.toggle('active', m === 'pants');
-    if(hasImg) updateDisplay();
-  };
+    const pantsCanvas = document.createElement('canvas');
+    pantsCanvas.width = 1024; pantsCanvas.height = 1024;
+    const pantsCtx = pantsCanvas.getContext('2d', { willReadFrequently: true });
 
-  document.getElementById('btn-shirt').onclick = () => setMode('shirt');
-  document.getElementById('btn-pants').onclick = () => setMode('pants');
+    // previewCanvas: what the user sees
+    const previewCanvas = document.getElementById('previewCanvas');
+    const previewCtx = previewCanvas.getContext('2d');
 
-  function updateDisplay() {
-    prevCtx.clearRect(0,0,1024,1024);
-    prevCtx.drawImage(mode === 'shirt' ? outShirt : outPants, 0, 0);
-    document.getElementById('modeBadge').textContent = mode.toUpperCase();
-    document.getElementById('filenameDisplay').textContent = fNames[mode];
-  }
+    // ── State ─────────────────────────────────────────────────────────────
+    let mode = 'shirt';
+    let hasImage = false;
+    const filenames = { shirt: '', pants: '' };
+    const recentSuffixes = new Set();
 
-  document.getElementById('uploadZone').onclick = () => document.getElementById('imageInput').click();
-  document.getElementById('imageInput').onchange = (e) => {
-    const file = e.target.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = (r) => {
-      const img = new Image();
-      img.onload = () => {
-        srcCtx.clearRect(0,0,585,559);
-        srcCtx.drawImage(img,0,0);
-        render();
-      };
-      img.src = r.target.result;
-    };
-    reader.readAsDataURL(file);
-  };
+    // ── DOM refs ──────────────────────────────────────────────────────────
+    const uploadZone    = document.getElementById('uploadZone');
+    const imageInput    = document.getElementById('imageInput');
+    const previewCard   = document.getElementById('previewCard');
+    const btnDownload   = document.getElementById('btnDownload');
+    const filenameDisplay = document.getElementById('filenameDisplay');
+    const modeBadge     = document.getElementById('modeBadge');
+    const btnShirt      = document.getElementById('btn-shirt');
+    const btnPants      = document.getElementById('btn-pants');
 
-  function blit(ctx, sx, sy, sw, sh, dx, dy, dw, dh) {
-    ctx.drawImage(srcCanv, sx, sy, sw, sh, dx, dy, dw, dh);
-  }
+    // ── Mode toggle ───────────────────────────────────────────────────────
+    btnShirt.addEventListener('click', () => setMode('shirt'));
+    btnPants.addEventListener('click', () => setMode('pants'));
 
-  function render() {
-    [outShirt.getContext('2d'), outPants.getContext('2d')].forEach(ctx => {
-      ctx.clearRect(0,0,1024,1024);
-      blit(ctx, 231, 74, 128, 128, 440, 103, 144, 290);
-      blit(ctx, 165, 74, 64, 128, 351, 103, 87, 290);
-      blit(ctx, 361, 74, 64, 128, 586, 103, 87, 290);
-      blit(ctx, 427, 74, 128, 128, 439, 519, 146, 290);
-    });
-    
-    const pCtx = outPants.getContext('2d');
-    blit(pCtx, 217, 355, 64, 128, 206, 661, 64, 292);
-    blit(pCtx, 308, 355, 64, 128, 754, 661, 64, 292);
-
-    const sCtx = outShirt.getContext('2d');
-    blit(sCtx, 217, 355, 64, 128, 204, 71, 66, 290);
-    blit(sCtx, 308, 355, 64, 128, 754, 71, 66, 290);
-
-    fNames.shirt = 'Shirt_' + Date.now() + '.png';
-    fNames.pants = 'Pants_' + Date.now() + '.png';
-    hasImg = true;
-    document.getElementById('previewCard').classList.add('visible');
-    updateDisplay();
-  }
-
-  document.getElementById('btnDownload').onclick = () => {
-    const a = document.createElement('a');
-    a.href = (mode === 'shirt' ? outShirt : outPants).toDataURL();
-    a.download = fNames[mode];
-    a.click();
-  };
-
-  (function() {
-    function attach() {
-      document.querySelectorAll('a').forEach(l => {
-        l.onclick = async (e) => {
-          if (l.hostname === window.location.hostname && !l.hash) {
-            e.preventDefault();
-            const w = document.getElementById('page-wrapper');
-            w.classList.add('fade-out');
-            try {
-              const r = await fetch(l.href);
-              const h = await r.text();
-              const d = new DOMParser().parseFromString(h, 'text/html');
-              setTimeout(() => {
-                w.innerHTML = d.querySelector('#page-wrapper').innerHTML;
-                document.title = d.title;
-                window.history.pushState({}, '', l.href);
-                attach();
-                w.classList.remove('fade-out');
-              }, 400);
-            } catch { window.location.href = l.href; }
-          }
-        };
-      });
+    function setMode(m) {
+      if (mode === m) return;
+      mode = m;
+      btnShirt.classList.toggle('active', m === 'shirt');
+      btnPants.classList.toggle('active', m === 'pants');
+      if (hasImage) swapPreview();
     }
-    attach();
-  })();
 
-  (function(){var _0x14e2=['\x77\x68\x61\x74\x20\x61\x72\x65\x20\x79\x6f\x75\x20\x64\x6f\x69\x6e\x20\x68\x65\x72\x65\x3f\x3f\x3f\x3f\x20\x3a\x29'];(function(_0x5b21,_0x3a10){var _0x4c2b=function(_0x2d0b){while(--_0x2d0b){_0x5b21['push'](_0x5b21['shift']());}};_0x4c2b(++_0x3a10);}(_0x14e2,0x1a2));var _0x2c4a=function(_0x5b21){_0x5b21=_0x5b21-0x0;return _0x14e2[_0x5b21];};console.log("%c"+_0x2c4a('0x0'),"color:#ff0055;font-size:20px;font-weight:bold;");})();
-</script>
+    function swapPreview() {
+      previewCanvas.classList.add('switching');
+      setTimeout(() => {
+        copyToPreview(mode === 'shirt' ? shirtCanvas : pantsCanvas);
+        modeBadge.textContent = mode === 'shirt' ? 'SHIRT' : 'PANTS';
+        filenameDisplay.textContent = filenames[mode];
+        previewCanvas.classList.remove('switching');
+      }, 150);
+    }
+
+    function copyToPreview(src) {
+      previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+      previewCtx.drawImage(src, 0, 0);
+    }
+
+    // ── Filename generation ───────────────────────────────────────────────
+    function generateFilename(type) {
+      const now = new Date();
+      const dd = String(now.getDate()).padStart(2, '0');
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const yy = String(now.getFullYear()).slice(-2);
+      const dateStr = dd + mm + yy;
+
+      let suffix;
+      let attempts = 0;
+      do {
+        suffix = String(Math.floor(100000 + Math.random() * 900000));
+        attempts++;
+      } while (recentSuffixes.has(suffix) && attempts < 100);
+
+      recentSuffixes.add(suffix);
+      if (recentSuffixes.size > 40) {
+        recentSuffixes.delete(recentSuffixes.values().next().value);
+      }
+
+      const label = type === 'pants' ? 'Pants' : 'Shirt';
+      return `${label}_${dateStr}${suffix}.png`;
+    }
+
+    // ── Upload handling ───────────────────────────────────────────────────
+    uploadZone.addEventListener('click', () => imageInput.click());
+    uploadZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadZone.classList.add('drag-over');
+    });
+    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+    uploadZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (file) processFile(file);
+    });
+    imageInput.addEventListener('change', (e) => {
+      if (e.target.files[0]) processFile(e.target.files[0]);
+      imageInput.value = '';
+    });
+
+    function processFile(file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          sourceCtx.clearRect(0, 0, sourceCanvas.width, sourceCanvas.height);
+          sourceCtx.drawImage(img, 0, 0);
+          renderBoth();
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // ── Alpha check ───────────────────────────────────────────────────────
+    function regionHasPixels(srcX, srcY, srcW, srcH) {
+      const data = sourceCtx.getImageData(srcX, srcY, srcW, srcH).data;
+      for (let i = 3; i < data.length; i += 4) {
+        if (data[i] > 0) return true;
+      }
+      return false;
+    }
+
+    // ── Blit onto a given destination context ─────────────────────────────
+    function blitRegion(dstCtx, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH) {
+      if (!regionHasPixels(srcX, srcY, srcW, srcH)) return;
+      const tmp = document.createElement('canvas');
+      tmp.width = dstW; tmp.height = dstH;
+      const tmpCtx = tmp.getContext('2d');
+      tmpCtx.imageSmoothingEnabled = true;
+      tmpCtx.imageSmoothingQuality = 'high';
+      tmpCtx.drawImage(sourceCanvas, srcX, srcY, srcW, srcH, 0, 0, dstW, dstH);
+      dstCtx.drawImage(tmp, dstX, dstY);
+    }
+
+    // ── Render both outputs ───────────────────────────────────────────────
+    function renderBoth() {
+      sourceCtx.imageSmoothingEnabled = true;
+      sourceCtx.imageSmoothingQuality = 'high';
+
+      // Clear both off-screen canvases
+      shirtCtx.clearRect(0, 0, 1024, 1024);
+      pantsCtx.clearRect(0, 0, 1024, 1024);
+
+      // ── TORSO (shared) ────────────────────────────────────────────────
+      // PT torso cross faces (left→right): R(purple,351-437), F(green,440-583), L(red,586-672)
+      // PT has NO back face — Roblox back torso is not mappable.
+      [shirtCtx, pantsCtx].forEach(ctx => {
+        blitRegion(ctx, 231, 8,   128, 66,  439, 7,   146, 96);   // Top cap
+        blitRegion(ctx, 231, 74,  128, 128, 440, 103, 144, 290);  // Front  → PT Front (green)
+        blitRegion(ctx, 165, 74,  64,  128, 351, 103, 87,  290);  // Left   → PT R col (purple)
+        blitRegion(ctx, 361, 74,  64,  128, 586, 103, 87,  290);  // Right  → PT L col (red)
+        blitRegion(ctx, 231, 202, 128, 66,  439, 430, 146, 59);   // Bottom tab
+        blitRegion(ctx, 427, 74,  128, 128, 439, 519, 146, 290);  // Back → PT back (cyan block below cross)
+      });
+
+      // ── LEGS (pants only) ────────────────────────────────────────────
+      // Shirt arm regions share the same source coords as legs — only map
+      // leg data when we actually have a pants template.
+      // PT Right Leg ← Roblox Left Leg
+      blitRegion(pantsCtx, 217, 290, 64, 63,  206, 597, 64, 64);
+      blitRegion(pantsCtx, 217, 355, 64, 128, 206, 661, 64, 292);
+      blitRegion(pantsCtx, 151, 355, 64, 128, 142, 661, 64, 292);
+      blitRegion(pantsCtx, 85,  355, 64, 128, 79,  661, 63, 292);
+      blitRegion(pantsCtx, 19,  355, 64, 128, 14,  661, 63, 292);
+      blitRegion(pantsCtx, 217, 485, 64, 64,  206, 953, 64, 64);
+      // PT Left Leg ← Roblox Right Leg
+      blitRegion(pantsCtx, 308, 290, 64, 63,  754, 597, 64, 64);
+      blitRegion(pantsCtx, 308, 355, 64, 128, 754, 661, 64, 292);
+      blitRegion(pantsCtx, 374, 355, 64, 128, 819, 661, 62, 292);
+      blitRegion(pantsCtx, 440, 355, 64, 128, 882, 661, 64, 292);
+      blitRegion(pantsCtx, 506, 355, 64, 128, 946, 661, 64, 292);
+      blitRegion(pantsCtx, 308, 485, 64, 64,  754, 953, 64, 64);
+
+      // ── ARMS (shirt only) ─────────────────────────────────────────────
+      // PT Right Arm ← Roblox Left Arm
+      blitRegion(shirtCtx, 217, 289, 64, 64,  204, 7,   66, 64);
+      blitRegion(shirtCtx, 217, 355, 64, 128, 204, 71,  66, 290);
+      blitRegion(shirtCtx, 151, 355, 64, 128, 138, 71,  66, 290);
+      blitRegion(shirtCtx, 85,  355, 64, 128, 72,  71,  66, 290);
+      blitRegion(shirtCtx, 19,  355, 64, 128, 6,   71,  65, 290);
+      blitRegion(shirtCtx, 217, 485, 64, 64,  204, 361, 66, 64);
+      // PT Left Arm ← Roblox Right Arm
+      blitRegion(shirtCtx, 308, 289, 64, 64,  754, 7,   66, 64);
+      blitRegion(shirtCtx, 308, 355, 64, 128, 754, 71,  66, 290);
+      blitRegion(shirtCtx, 374, 355, 64, 128, 820, 71,  65, 290);
+      blitRegion(shirtCtx, 440, 355, 64, 128, 886, 71,  66, 290);
+      blitRegion(shirtCtx, 506, 355, 64, 128, 952, 71,  66, 290);
+      blitRegion(shirtCtx, 308, 485, 64, 64,  754, 361, 66, 64);
+
+      // ── Generate filenames for both ───────────────────────────────────
+      filenames.shirt = generateFilename('shirt');
+      filenames.pants = generateFilename('pants');
+
+      // ── Show preview for current mode ────────────────────────────────
+      hasImage = true;
+      copyToPreview(mode === 'shirt' ? shirtCanvas : pantsCanvas);
+      modeBadge.textContent = mode === 'shirt' ? 'SHIRT' : 'PANTS';
+      filenameDisplay.textContent = filenames[mode];
+      previewCard.classList.add('visible');
+    }
+
+    // ── Download ──────────────────────────────────────────────────────────
+    btnDownload.addEventListener('click', () => {
+      const src = mode === 'shirt' ? shirtCanvas : pantsCanvas;
+      const link = document.createElement('a');
+      link.href = src.toDataURL('image/png');
+      link.download = filenames[mode];
+      link.click();
+
+      // Clear everything after a short delay
+      setTimeout(() => {
+        shirtCtx.clearRect(0, 0, 1024, 1024);
+        pantsCtx.clearRect(0, 0, 1024, 1024);
+        sourceCtx.clearRect(0, 0, 585, 559);
+        previewCtx.clearRect(0, 0, 1024, 1024);
+        previewCard.classList.remove('visible');
+        filenameDisplay.textContent = '—';
+        filenames.shirt = '';
+        filenames.pants = '';
+        hasImage = false;
+      }, 300);
+    });
+  </script>
 </body>
 </html>
