@@ -5,47 +5,50 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <style id="page-style">
-    /* --- COMBINER SPECIFIC STYLES --- */
+  
+  <style id="main-theme-styles">
+    /* --- SHARED & COMBINER STYLES --- */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --pink: #bf4197; --blue: #257fdb; --green: #27a96b;
       --bg: #141414; --surface: #1e1e1e; --border: #333;
       --text: #f0f0f0; --muted: #888; --radius: 14px;
     }
-    body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; }
+    body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; margin: 0; }
     
     #page-wrapper { min-height: 100vh; width: 100%; opacity: 1; transition: opacity 0.4s ease-in-out; display: flex; flex-direction: column; }
     #page-wrapper.fade-out { opacity: 0; }
 
     .hero { position: relative; padding: 60px 24px; text-align: center; background: linear-gradient(135deg, #0d1f14 0%, #0d1a2e 50%, #1a0d14 100%); }
-    .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 8vw, 3.5rem); font-weight: 800; background: linear-gradient(100deg, var(--green), var(--blue), var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+    .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(2.2rem, 8vw, 3.5rem); font-weight: 800; background: linear-gradient(100deg, var(--green), var(--blue), var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
     
     .main { max-width: 800px; width: 100%; margin: 0 auto; padding: 40px 20px; flex: 1; }
     
     .upload-pair { display: flex; gap: 20px; margin-bottom: 30px; }
     @media (max-width: 600px) { .upload-pair { flex-direction: column; } }
     
-    .upload-slot { flex: 1; border: 2px dashed var(--border); border-radius: var(--radius); background: var(--surface); padding: 40px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; cursor: pointer; transition: all 0.2s ease; min-height: 200px; }
+    .upload-slot { flex: 1; border: 2px dashed var(--border); border-radius: var(--radius); background: var(--surface); padding: 40px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; cursor: pointer; transition: all 0.2s ease; min-height: 200px; text-align: center; }
     .upload-slot:hover { border-color: var(--blue); background: #222; }
     .upload-slot.has-file { border-color: var(--green); border-style: solid; background: rgba(39,169,107,0.05); }
     
-    .slot-icon { width: 40px; height: 40px; pointer-events: none; }
+    .slot-icon { width: 44px; height: 44px; pointer-events: none; margin-bottom: 4px; }
     
-    .btn-combine { display: block; width: fit-content; margin: 0 auto 40px; padding: 14px 40px; font-family: 'Syne', sans-serif; font-weight: 700; border-radius: 50px; border: none; color: white; background: linear-gradient(90deg, var(--green), var(--blue)); cursor: pointer; transition: transform 0.2s; }
-    .btn-combine:disabled { opacity: 0.2; cursor: not-allowed; transform: none; }
-    .btn-combine:hover:not(:disabled) { transform: scale(1.05); }
+    .btn-combine { display: block; width: fit-content; margin: 0 auto 40px; padding: 16px 44px; font-family: 'Syne', sans-serif; font-weight: 800; border-radius: 50px; border: none; color: white; background: linear-gradient(90deg, var(--green), var(--blue)); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+    .btn-combine:disabled { opacity: 0.15; cursor: not-allowed; transform: none; }
+    .btn-combine:hover:not(:disabled) { transform: scale(1.04); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
 
-    .preview-card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; display: none; }
-    .preview-card.visible { display: block; animation: fadeIn 0.5s ease; }
-    .canvas-container { background: #111; padding: 20px; display: flex; justify-content: center; }
-    canvas { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .preview-card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; display: none; margin-top: 10px; }
+    .preview-card.visible { display: block; animation: slideIn 0.5s ease; }
     
-    .preview-footer { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); }
-    .btn-download { background: var(--green); color: white; border: none; padding: 10px 25px; border-radius: 50px; font-family: 'Syne', sans-serif; font-weight: 700; cursor: pointer; }
+    .canvas-container { background: #0a0a0a; padding: 30px; display: flex; justify-content: center; }
+    canvas { max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); border: 1px solid #333; }
+    
+    .preview-footer { padding: 24px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); background: rgba(0,0,0,0.2); }
+    .btn-download { background: var(--green); color: white; border: none; padding: 12px 28px; border-radius: 50px; font-family: 'Syne', sans-serif; font-weight: 700; cursor: pointer; transition: opacity 0.2s; }
+    .btn-download:hover { opacity: 0.9; }
     
     input[type="file"] { display: none; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
@@ -53,22 +56,22 @@
 <div id="page-wrapper">
   <div class="hero">
     <h1>Shirt + Pants Combiner</h1>
-    <p style="color: var(--muted)">Select both textures to merge them into one PT file.</p>
-    <p style="margin-top: 15px; font-size: 0.85rem;"><a href="index.html" style="color: #f59dcc; text-decoration: none; font-weight: 600;">← Back to RBX2PT Converter</a></p>
+    <p style="color: var(--muted); font-size: 0.95rem;">Combine two separate PT textures into one wearable file.</p>
+    <p style="margin-top: 20px; font-size: 0.85rem;"><a href="index.html" style="color: #f59dcc; text-decoration: none; font-weight: 700; border: 1px solid rgba(245,157,204,0.3); padding: 8px 16px; border-radius: 20px;">← Back to RBX2PT</a></p>
   </div>
 
   <div class="main">
     <div class="upload-pair">
       <div class="upload-slot" id="slotShirt">
         <svg class="slot-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.86H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.86l.58-3.57a2 2 0 00-1.34-2.23z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span style="font-family: 'Syne'; font-weight:700; color: var(--blue)">SHIRT TEXTURE</span>
-        <span id="shirtStatus" style="font-size: 0.75rem; color: var(--muted);">Click or Drop PNG</span>
+        <span style="font-family: 'Syne'; font-weight:800; color: var(--blue); font-size: 0.8rem; letter-spacing: 1px;">SHIRT</span>
+        <span id="shirtStatus" style="font-size: 0.75rem; color: var(--muted);">Click or Drop Texture</span>
       </div>
 
       <div class="upload-slot" id="slotPants">
         <svg class="slot-icon" viewBox="0 0 24 24" fill="none" stroke="var(--pink)" stroke-width="1.5"><path d="M6 2h12l1 8H5L6 2zM5 10l-1 12h5l2-6 2 6h5L17 10" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span style="font-family: 'Syne'; font-weight:700; color: var(--pink)">PANTS TEXTURE</span>
-        <span id="pantsStatus" style="font-size: 0.75rem; color: var(--muted);">Click or Drop PNG</span>
+        <span style="font-family: 'Syne'; font-weight:800; color: var(--pink); font-size: 0.8rem; letter-spacing: 1px;">PANTS</span>
+        <span id="pantsStatus" style="font-size: 0.75rem; color: var(--muted);">Click or Drop Texture</span>
       </div>
     </div>
 
@@ -80,7 +83,7 @@
       </div>
       <div class="preview-footer">
         <span id="finalFilename" style="font-family: monospace; font-size: 0.8rem; color: var(--muted)"></span>
-        <button class="btn-download" id="btnDownload">Download Result</button>
+        <button class="btn-download" id="btnDownload">Download PNG</button>
       </div>
     </div>
   </div>
@@ -123,10 +126,10 @@
     const out = document.getElementById('outputCanvas');
     const outCtx = out.getContext('2d');
     outCtx.clearRect(0,0,1024,1024);
-    outCtx.drawImage(pCanv, 0, 0); // Pants on bottom
-    outCtx.drawImage(sCanv, 0, 0); // Shirt on top
+    outCtx.drawImage(pCanv, 0, 0); 
+    outCtx.drawImage(sCanv, 0, 0); 
     document.getElementById('previewCard').classList.add('visible');
-    document.getElementById('finalFilename').textContent = `pt_combined_${Date.now()}.png`;
+    document.getElementById('finalFilename').textContent = `combined_${Date.now()}.png`;
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
   };
 
@@ -137,12 +140,11 @@
     link.click();
   };
 
-  // --- SPA NAVIGATION WITH FORCE-STYLE UPDATE ---
+  // --- THE ULTIMATE SPA NAVIGATOR ---
   (function SPA() {
-    function attachListeners() {
+    function init() {
       document.querySelectorAll('a').forEach(link => {
         link.onclick = async (e) => {
-          // Only internal links
           if (link.hostname === window.location.hostname && !link.hash) {
             e.preventDefault();
             const wrapper = document.getElementById('page-wrapper');
@@ -155,23 +157,25 @@
               const text = await res.text();
               const nextDoc = new DOMParser().parseFromString(text, 'text/html');
               const nextContent = nextDoc.getElementById('page-wrapper');
+              
+              // Key: Find ANY style tag in the new doc
               const nextStyle = nextDoc.querySelector('style');
 
               setTimeout(() => {
                 if (nextContent) {
-                  // 1. Swap the Stylesheet
+                  // 1. HARD SWAP CSS
                   const currentStyle = document.querySelector('style');
                   if (nextStyle && currentStyle) {
                     currentStyle.innerHTML = nextStyle.innerHTML;
                   }
                   
-                  // 2. Swap the Content
+                  // 2. SWAP CONTENT
                   wrapper.innerHTML = nextContent.innerHTML;
                   document.title = nextDoc.title;
                   window.history.pushState({}, '', link.href);
                   
-                  // 3. Cleanup
-                  attachListeners(); // Re-bind for new content
+                  // 3. RE-INIT EVERYTHING
+                  init(); 
                   wrapper.classList.remove('fade-out');
                   window.scrollTo(0, 0);
                 } else {
@@ -185,7 +189,7 @@
         };
       });
     }
-    attachListeners();
+    init();
     window.onpopstate = () => location.reload();
   })();
 </script>
