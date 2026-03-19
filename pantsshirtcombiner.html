@@ -9,15 +9,9 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --pink: #bf4197;
-      --blue: #257fdb;
-      --green: #27a96b;
-      --bg: #141414;
-      --surface: #1e1e1e;
-      --border: #333;
-      --text: #f0f0f0;
-      --muted: #888;
-      --radius: 14px;
+      --pink: #bf4197; --blue: #257fdb; --green: #27a96b;
+      --bg: #141414; --surface: #1e1e1e; --border: #333;
+      --text: #f0f0f0; --muted: #888; --radius: 14px;
     }
 
     body {
@@ -25,270 +19,254 @@
       font-family: 'DM Sans', sans-serif;
       color: var(--text);
       min-height: 100vh;
-      overflow-x: hidden;
+      margin: 0;
     }
 
-    /* Page Transition Wrapper */
     #page-wrapper {
         min-height: 100vh;
         width: 100%;
         opacity: 1;
         transition: opacity 0.4s ease-in-out;
+        display: flex;
+        flex-direction: column;
     }
     #page-wrapper.fade-out { opacity: 0; }
 
     .hero {
       position: relative;
-      overflow: hidden;
-      padding: 52px 24px 80px;
+      padding: 60px 24px;
       text-align: center;
       background: linear-gradient(135deg, #0d1f14 0%, #0d1a2e 50%, #1a0d14 100%);
     }
-    .hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 50% 70% at 15% 50%, rgba(39,169,107,0.15) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 60% at 50% 40%, rgba(37,127,219,0.12) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 70% at 85% 50%, rgba(191,65,151,0.15) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-eyebrow { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); margin-bottom: 12px; }
+
     .hero h1 {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(1.8rem, 5vw, 3.2rem);
-      font-weight: 800; line-height: 1.1; letter-spacing: -0.02em;
-      background: linear-gradient(100deg, #27a96b 0%, #257fdb 50%, #bf4197 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      margin-bottom: 14px;
+      font-size: clamp(2rem, 8vw, 3.5rem);
+      font-weight: 800;
+      background: linear-gradient(100deg, var(--green), var(--blue), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
     }
-    .hero-sub { font-size: 0.85rem; color: var(--muted); }
-    .hero-sub a { color: #f59dcc; text-decoration: none; font-weight: 500; }
 
-    .main { max-width: 720px; margin: 0 auto; padding: 0 20px 60px; }
+    .main { 
+      max-width: 800px; 
+      width: 100%;
+      margin: 0 auto; 
+      padding: 40px 20px; 
+    }
 
-    .upload-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 32px; margin-bottom: 20px; }
-    @media (max-width: 520px) { .upload-pair { grid-template-columns: 1fr; } }
+    .upload-pair { 
+      display: flex; 
+      gap: 20px; 
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 600px) {
+      .upload-pair { flex-direction: column; }
+    }
 
     .upload-slot {
-      border: 1.5px dashed var(--border); border-radius: var(--radius); background: var(--surface);
-      padding: 32px 16px; display: flex; flex-direction: column; align-items: center; gap: 8px;
-      cursor: pointer; transition: all 0.2s;
-      text-align: center; position: relative; min-height: 160px; justify-content: center;
+      flex: 1;
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-height: 200px;
     }
-    .upload-slot:hover, .upload-slot.drag-over { border-color: var(--blue); background: rgba(37,127,219,0.06); }
-    .upload-slot.has-file { border-color: var(--green); background: rgba(39,169,107,0.06); border-style: solid; }
 
-    .slot-icon { width: 32px; height: 32px; opacity: 0.6; pointer-events: none; }
-    .slot-label { font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; pointer-events: none; }
-    .slot-label.shirt { color: var(--blue); }
-    .slot-label.pants { color: var(--pink); }
-    .slot-hint { font-size: 0.75rem; color: var(--muted); pointer-events: none; }
-    .slot-filename { font-size: 0.7rem; color: var(--green); font-family: monospace; display: none; word-break: break-all; margin-top: 4px; }
-    .upload-slot.has-file .slot-filename { display: block; }
-    .upload-slot.has-file .slot-hint { display: none; }
+    .upload-slot:hover { border-color: var(--blue); background: #252525; }
+    .upload-slot.has-file { border-color: var(--green); border-style: solid; background: rgba(39,169,107,0.05); }
 
-    .combine-row { display: flex; justify-content: center; margin-bottom: 20px; }
-    .btn-combine {
-      font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; padding: 12px 36px;
-      border-radius: 999px; border: none; cursor: pointer; color: #fff;
-      background: linear-gradient(90deg, var(--green), var(--blue));
-      display: flex; align-items: center; gap: 10px; transition: transform 0.1s;
-    }
-    .btn-combine:disabled { opacity: 0.3; cursor: not-allowed; filter: grayscale(1); }
-    .btn-combine:active:not(:disabled) { transform: scale(0.98); }
-
-    .preview-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: none; margin-top: 20px; }
-    .preview-card.visible { display: block; }
-    .preview-header { padding: 14px 18px; border-bottom: 1px solid var(--border); }
-    .preview-title { font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .slot-icon { width: 40px; height: 40px; stroke-width: 1.5; pointer-events: none; }
+    .slot-label { font-family: 'Syne', sans-serif; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; }
     
-    .canvas-wrap { background-color: #111; padding: 24px; display: flex; justify-content: center; }
-    #outputCanvas { max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-
-    .preview-footer { padding: 14px 18px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-    .btn-download {
-      font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700; padding: 10px 22px;
-      border-radius: 999px; border: none; cursor: pointer; color: #fff;
-      background: var(--green); transition: opacity 0.2s;
+    .btn-combine {
+      display: block;
+      width: fit-content;
+      margin: 0 auto 40px;
+      padding: 14px 40px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      border-radius: 50px;
+      border: none;
+      color: white;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.2s;
     }
-    .btn-download:hover { opacity: 0.9; }
 
-    input[type=file] { display: none; }
+    .btn-combine:disabled { opacity: 0.2; cursor: not-allowed; }
+    .btn-combine:hover:not(:disabled) { transform: scale(1.05); }
+
+    .preview-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      display: none;
+    }
+
+    .preview-card.visible { display: block; animation: fadeIn 0.5s ease; }
+    .canvas-container { background: #111; padding: 20px; display: flex; justify-content: center; }
+    canvas { max-width: 100%; height: auto; border-radius: 8px; }
+
+    .preview-footer { 
+        padding: 20px; 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        border-top: 1px solid var(--border);
+    }
+
+    .btn-download {
+      background: var(--green);
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 50px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    input[type="file"] { display: none; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
 
 <div id="page-wrapper">
   <div class="hero">
-    <p class="hero-eyebrow">Polytoria Clothing</p>
     <h1>Shirt + Pants Combiner</h1>
-    <p class="hero-sub">
-      Also see: <a href="index.html">RBX2PT — Roblox to Polytoria</a>
-    </p>
+    <p style="color: var(--muted)">Select both textures to merge them into one PT file.</p>
+    <p style="margin-top: 10px; font-size: 0.8rem;"><a href="index.html" style="color: #f59dcc; text-decoration: none;">← Back to RBX2PT</a></p>
   </div>
 
   <div class="main">
     <div class="upload-pair">
       <div class="upload-slot" id="slotShirt">
-        <svg class="slot-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.86H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.86l.58-3.57a2 2 0 00-1.34-2.23z"/>
-        </svg>
-        <span class="slot-label shirt">Shirt</span>
-        <span class="slot-hint">Drop shirt texture here</span>
-        <span class="slot-filename" id="shirtFilename">—</span>
+        <svg class="slot-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.86H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.86l.58-3.57a2 2 0 00-1.34-2.23z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="slot-label" style="color: var(--blue)">Shirt Texture</span>
+        <span id="shirtStatus" style="font-size: 0.75rem; color: var(--muted);">Click to upload</span>
       </div>
 
       <div class="upload-slot" id="slotPants">
-        <svg class="slot-icon" viewBox="0 0 24 24" fill="none" stroke="var(--pink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M6 2h12l1 8H5L6 2zM5 10l-1 12h5l2-6 2 6h5L17 10"/>
-        </svg>
-        <span class="slot-label pants">Pants</span>
-        <span class="slot-hint">Drop pants texture here</span>
-        <span class="slot-filename" id="pantsFilename">—</span>
+        <svg class="slot-icon" viewBox="0 0 24 24" fill="none" stroke="var(--pink)"><path d="M6 2h12l1 8H5L6 2zM5 10l-1 12h5l2-6 2 6h5L17 10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="slot-label" style="color: var(--pink)">Pants Texture</span>
+        <span id="pantsStatus" style="font-size: 0.75rem; color: var(--muted);">Click to upload</span>
       </div>
     </div>
 
-    <div class="combine-row">
-      <button class="btn-combine" id="btnCombine" disabled>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 5v14M5 12h14"/>
-        </svg>
-        Combine Textures
-      </button>
-    </div>
+    <button class="btn-combine" id="btnCombine" disabled>Combine Textures</button>
 
     <div class="preview-card" id="previewCard">
-      <div class="preview-header">
-        <span class="preview-title">Combined Output</span>
-      </div>
-      <div class="canvas-wrap">
+      <div class="canvas-container">
         <canvas id="outputCanvas" width="1024" height="1024"></canvas>
       </div>
       <div class="preview-footer">
-        <span id="filenameDisplay" style="font-size: 0.75rem; color: var(--muted); font-family: monospace;">—</span>
+        <span id="finalFilename" style="font-family: monospace; font-size: 0.8rem;"></span>
         <button class="btn-download" id="btnDownload">Download PNG</button>
       </div>
     </div>
   </div>
 </div>
 
-<input type="file" accept="image/*" id="inputShirt">
-<input type="file" accept="image/*" id="inputPants">
+<input type="file" id="inputShirt" accept="image/*">
+<input type="file" id="inputPants" accept="image/*">
 
 <script>
-    // COMBINER LOGIC
-    const shirtCanvas = document.createElement('canvas'); shirtCanvas.width = 1024; shirtCanvas.height = 1024;
-    const shirtCtx = shirtCanvas.getContext('2d');
-    const pantsCanvas = document.createElement('canvas'); pantsCanvas.width = 1024; pantsCanvas.height = 1024;
-    const pantsCtx = pantsCanvas.getContext('2d');
-    const outputCanvas = document.getElementById('outputCanvas');
-    const outputCtx = outputCanvas.getContext('2d');
+  const shirtCanvas = document.createElement('canvas'); shirtCanvas.width = 1024; shirtCanvas.height = 1024;
+  const pantsCanvas = document.createElement('canvas'); pantsCanvas.width = 1024; pantsCanvas.height = 1024;
+  
+  let shirtReady = false, pantsReady = false;
 
-    let shirtLoaded = false, pantsLoaded = false, currentFilename = '';
+  function setupInput(slotId, inputId, canvas, statusId, type) {
+    const slot = document.getElementById(slotId);
+    const input = document.getElementById(inputId);
+    const ctx = canvas.getContext('2d');
 
-    function handleFile(file, isShirt) {
-        if (!file || !file.type.startsWith('image/')) return;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const img = new Image();
-            img.onload = () => {
-                const ctx = isShirt ? shirtCtx : pantsCtx;
-                ctx.clearRect(0, 0, 1024, 1024);
-                ctx.drawImage(img, 0, 0, 1024, 1024);
-                
-                if (isShirt) {
-                    shirtLoaded = true;
-                    document.getElementById('slotShirt').classList.add('has-file');
-                    document.getElementById('shirtFilename').textContent = file.name;
-                } else {
-                    pantsLoaded = true;
-                    document.getElementById('slotPants').classList.add('has-file');
-                    document.getElementById('pantsFilename').textContent = file.name;
-                }
-                document.getElementById('btnCombine').disabled = !(shirtLoaded && pantsLoaded);
-            };
-            img.src = e.target.result;
+    slot.onclick = () => input.click();
+
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          ctx.clearRect(0,0,1024,1024);
+          ctx.drawImage(img, 0, 0, 1024, 1024);
+          slot.classList.add('has-file');
+          document.getElementById(statusId).textContent = file.name;
+          if(type === 'shirt') shirtReady = true; else pantsReady = true;
+          document.getElementById('btnCombine').disabled = !(shirtReady && pantsReady);
         };
-        reader.readAsDataURL(file);
-    }
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+  }
 
-    // Setup Slots (Click + Drag/Drop)
-    [ {s: 'slotShirt', i: 'inputShirt', t: true}, {s: 'slotPants', i: 'inputPants', t: false} ].forEach(cfg => {
-        const slot = document.getElementById(cfg.s);
-        const input = document.getElementById(cfg.i);
-        
-        slot.addEventListener('click', () => input.click());
-        input.addEventListener('change', (e) => handleFile(e.target.files[0], cfg.t));
-        
-        slot.addEventListener('dragover', (e) => { e.preventDefault(); slot.classList.add('drag-over'); });
-        slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
-        slot.addEventListener('drop', (e) => {
+  setupInput('slotShirt', 'inputShirt', shirtCanvas, 'shirtStatus', 'shirt');
+  setupInput('slotPants', 'inputPants', pantsCanvas, 'pantsStatus', 'pants');
+
+  document.getElementById('btnCombine').onclick = () => {
+    const out = document.getElementById('outputCanvas');
+    const outCtx = out.getContext('2d');
+    outCtx.clearRect(0,0,1024,1024);
+    outCtx.drawImage(pantsCanvas, 0, 0);
+    outCtx.drawImage(shirtCanvas, 0, 0);
+    document.getElementById('previewCard').classList.add('visible');
+    document.getElementById('finalFilename').textContent = `combined_${Date.now()}.png`;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  };
+
+  document.getElementById('btnDownload').onclick = () => {
+    const link = document.createElement('a');
+    link.download = document.getElementById('finalFilename').textContent;
+    link.href = document.getElementById('outputCanvas').toDataURL();
+    link.click();
+  };
+
+  // Improved SPA Navigation
+  (function() {
+    function initLinks() {
+      document.querySelectorAll('a').forEach(a => {
+        a.onclick = async (e) => {
+          if (a.hostname === window.location.hostname && !a.hash) {
             e.preventDefault();
-            slot.classList.remove('drag-over');
-            if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0], cfg.t);
-        });
-    });
-
-    document.getElementById('btnCombine').addEventListener('click', () => {
-        outputCtx.clearRect(0, 0, 1024, 1024);
-        outputCtx.drawImage(pantsCanvas, 0, 0); // Pants bottom
-        outputCtx.drawImage(shirtCanvas, 0, 0); // Shirt top
-        document.getElementById('previewCard').classList.add('visible');
-        currentFilename = `combined_${Date.now()}.png`;
-        document.getElementById('filenameDisplay').textContent = currentFilename;
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    });
-
-    document.getElementById('btnDownload').addEventListener('click', () => {
-        const a = document.createElement('a');
-        a.href = outputCanvas.toDataURL('image/png');
-        a.download = currentFilename;
-        a.click();
-    });
-
-    // SPA FADE SCRIPT (FIXED)
-    (function() {
-        function attachListeners() {
-            document.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', async function(e) {
-                    const target = this.href;
-                    if (this.hostname === window.location.hostname && !this.target && !target.includes('#')) {
-                        e.preventDefault();
-                        const wrapper = document.getElementById('page-wrapper');
-                        if (!wrapper) return (window.location.href = target);
-
-                        wrapper.classList.add('fade-out');
-                        try {
-                            const resp = await fetch(target);
-                            const html = await resp.text();
-                            const nextDoc = new DOMParser().parseFromString(html, 'text/html');
-                            const nextContent = nextDoc.querySelector('#page-wrapper');
-
-                            setTimeout(() => {
-                                if (nextContent) {
-                                    wrapper.innerHTML = nextContent.innerHTML;
-                                    document.title = nextDoc.title;
-                                    window.history.pushState({}, '', target);
-                                    attachListeners();
-                                    wrapper.classList.remove('fade-out');
-                                    window.scrollTo(0,0);
-                                } else {
-                                    window.location.href = target;
-                                }
-                            }, 400);
-                        } catch { window.location.href = target; }
-                    }
-                });
-            });
-        }
-        attachListeners();
-        window.addEventListener('popstate', () => location.reload());
-    })();
-
-    // Console Greeting
-    (function(){var _0x14e2=['\x77\x68\x61\x74\x20\x61\x72\x65\x20\x79\x6f\x75\x20\x64\x6f\x69\x6e\x20\x68\x65\x72\x65\x3f\x3f\x3f\x3f\x20\x3a\x29'];(function(_0x5b21,_0x3a10){var _0x4c2b=function(_0x2d0b){while(--_0x2d0b){_0x5b21['push'](_0x5b21['shift']());}};_0x4c2b(++_0x3a10);}(_0x14e2,0x1a2));var _0x2c4a=function(_0x5b21){_0x5b21=_0x5b21-0x0;return _0x14e2[_0x5b21];};console.log("%c"+_0x2c4a('0x0'),"color:#ff0055;font-size:20px;font-weight:bold;");})();
+            const wrap = document.getElementById('page-wrapper');
+            wrap.classList.add('fade-out');
+            try {
+              const res = await fetch(a.href);
+              const text = await res.text();
+              const nextDoc = new DOMParser().parseFromString(text, 'text/html');
+              const nextWrap = nextDoc.getElementById('page-wrapper');
+              setTimeout(() => {
+                if (nextWrap) {
+                  wrap.innerHTML = nextWrap.innerHTML;
+                  document.title = nextDoc.title;
+                  window.history.pushState({}, '', a.href);
+                  initLinks(); // Re-init for new links
+                  wrap.classList.remove('fade-out');
+                } else { window.location.href = a.href; }
+              }, 400);
+            } catch { window.location.href = a.href; }
+          }
+        };
+      });
+    }
+    initLinks();
+  })();
 </script>
-
 </body>
 </html>
